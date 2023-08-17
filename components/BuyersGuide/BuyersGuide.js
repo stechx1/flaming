@@ -4,7 +4,7 @@ import BuyersGuideHelper from './BuyersGuideHelper'
 const BuyersGuide = () => {
   return (
     <div className=' max-w-7xl my-14 px-5 flex gap-1 flex-col m-auto '>
-      <span className='text-[#003933] text-[40px] font-[600]'>A Short Buyer’s Guide to Laser Name Engraving on Wood</span>
+      <span className='text-[#003933] sm:text-[40px] text-[30px] font-[600]'>A Short Buyer’s Guide to Laser Name Engraving on Wood</span>
       <span className='text-[#1C1C1C]'>We turn your ideas into beautifully crafted timber designs. Our name engraving on wood is flawlessly executed, and when combined with our skill, you can be sure of perfection. We have extensive experience and believe in a hands-on approach from the moment you contact us until you hold your timber gift in your hands.</span>
       <div className='flex flex-col mt-5 gap-5 '>
 

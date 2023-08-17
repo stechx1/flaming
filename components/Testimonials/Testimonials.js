@@ -6,9 +6,9 @@ const Testimonials = () => {
 
       <div className='flex flex-col gap-3 max-w-7xl m-auto'>
 
-        <div className='flex justify-between items-center my-3'>
+        <div className='flex sm:flex-row flex-col justify-between items-center my-3'>
 
-          <span className='text-white text-[40px] font-[600]'>Testimonials</span>
+          <span className='text-white sm:text-[40px] text-[30px] font-[600]'>Testimonials</span>
           <button className='text-white bg-[#FE5B26] px-2 py-1 h-fit'>Sell All Reviews</button>
 
         </div>

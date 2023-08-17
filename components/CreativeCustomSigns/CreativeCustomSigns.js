@@ -6,7 +6,7 @@ const CreativeCustomSigns = () => {
     <div className='bg-[#E7E1CC] px-5 py-16'>
 
       <div className=' max-w-7xl flex gap-1 flex-col m-auto'>
-        <span className='text-[#003933] text-[40px] font-[600]'>Creative Ways to Use Custom Wood Signs</span>
+        <span className='text-[#003933] sm:text-[40px] text-[30px] font-[600]'>Creative Ways to Use Custom Wood Signs</span>
         <span className='text-[#1C1C1C]'>What do you buy a person who has everything? We all know a group of individuals who make it incredibly hard when the time comes for buying gifts. There is a hidden gem that will solve all these problems. Flamin’ Signs and Boxes is no ordinary gift shop but a unique timber laser engraving shop with various creative products. Here are some creative inspirations to get you going.</span>
 
         <div className='flex flex-col mt-5 gap-5 '>

@@ -6,7 +6,7 @@ const Featured = () => {
     <div className='bg-[#f0eeef]  pb-10'>
 
       <div className='flex justify-center py-7 bg-[#E7E1CC]'>
-        <span className='text-[#003933] text-[40px] text-center font-[600]'>Products</span>
+        <span className='text-[#003933] sm:text-[40px] text-[30px] text-center font-[600]'>Products</span>
 
       </div>
 

@@ -1,8 +1,9 @@
 import React from 'react'
-
+import { useRouter } from 'next/router'
 const ProductBox = ({ image }) => {
+  const router = useRouter();
   return (
-    <div className='bg-white flex flex-col rounded-[4px] p-[0.5rem] sm:w-[80%] px-5'>
+    <div className='bg-white flex flex-col rounded-[4px] p-[0.5rem] lg:w-[80%] px-5'>
 
       {/* <img src="/hero.png" alt="car-img" className='w-2/3' /> */}
       <div style={{ backgroundImage: `url(${image})` }} className="bg-cover bg-center bg-no-repeat w-full h-[150px]">
@@ -14,7 +15,7 @@ const ProductBox = ({ image }) => {
       </span>
 
       <div className='flex justify-between items-center'>
-        <button className='bg-[#003933] text-white w-fit px-3 py-2 my-4 rounded-[4px]'>Explore</button>
+        <button onClick={() => { router.push({ pathname: '/productitem', query: { name: 'Engraved Olive Wood Hearts' }, }) }} className='bg-[#003933] text-white w-fit px-3 py-2 my-4 rounded-[4px]'>Explore</button>
 
         <div className='cursor-pointer'>
           <img src="/cart1.png" alt="cart" className='' />

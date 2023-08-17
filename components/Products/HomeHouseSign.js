@@ -3,7 +3,7 @@ import ProductBox from './ProductBox'
 
 const HomeHouseSign = () => {
   return (
-    <div className='grid grid-cols-3 gap-5'>
+    <div className='grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5'>
       <ProductBox image={'/products/6.png'} />
       <ProductBox image={'/products/2.png'} />
       <ProductBox image={'/products/3.png'} />

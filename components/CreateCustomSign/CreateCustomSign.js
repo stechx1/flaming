@@ -13,7 +13,7 @@ const CreateCustomSign = () => {
         </div>
 
         <div className=' flex flex-col'>
-          <span className='text-[#003933] text-[40px] text-center font-[600]'>Create your custom signs and boxes</span>
+          <span className='text-[#003933] sm:text-[40px] text-[30px] text-center font-[600]'>Create your custom signs and boxes</span>
           <span className='text-[#1C1C1C] text-center text-[18px]'>The one stop gift shop for the person who is hard to buy for, or who has everything.</span>
 
           <div className='flex md:flex-row flex-col gap-3 max-w-screen-2xl my-10 justify-between px-5'>

@@ -22,7 +22,7 @@ export default function Home() {
       <Testimonials />
       <div className='my-10 flex lg:flex-row flex-col items-center gap-4 justify-between max-w-7xl m-auto p-5'>
         <div className='flex flex-col gap-5'>
-          <span className='text-[#003933] text-[40px] font-[600]'>Customise your favourite sign</span>
+          <span className='text-[#003933] sm:text-[40px] text-[30px] font-[600]'>Customise your favourite sign</span>
           <span className=' text-[18px]'>Turn your ideas into beautifully crafted timber designs</span>
           <div className='flex gap-4 mt-5'>
 
