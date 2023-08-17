@@ -14,8 +14,8 @@ export default function Navbar() {
   const navigation = [
     { name: 'Home', current: router.pathname === '/' ? true : false, path: "/" },
     { name: 'About', current: router.pathname === '/about-us' ? true : false, path: '/about-us' },
-    { name: 'Reviews', current: router.pathname === '/reviews' ? true : false, path: "/" },
-    { name: 'Products', current: router.pathname === '/products' ? true : false, path: '/' },
+    { name: 'Reviews', current: router.pathname === '/customer-reviews' ? true : false, path: "/customer-reviews" },
+    { name: 'Products', current: router.pathname === '/products' ? true : false, path: '/products' },
     { name: 'Contact', current: router.pathname === '/contact-us' ? true : false, path: '/contact-us' },
     { name: 'Design Your Sign or Box', current: router.pathname === '/design-your-sign-or-box' ? true : false, path: '/' },
 

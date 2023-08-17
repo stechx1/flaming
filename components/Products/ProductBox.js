@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FeaturedBox = ({ image }) => {
+const ProductBox = ({ image }) => {
   return (
     <div className='bg-white flex flex-col rounded-[4px] p-[0.5rem] sm:w-[80%] px-5'>
 
@@ -26,4 +26,4 @@ const FeaturedBox = ({ image }) => {
   )
 }
 
-export default FeaturedBox
+export default ProductBox

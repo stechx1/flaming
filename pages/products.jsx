@@ -1,3 +1,11 @@
+import BBQSmokerSigns from '@/components/Products/BBQSmokerSigns';
+import GarageSigns from '@/components/Products/GarageSigns';
+import GerdenSigns from '@/components/Products/GerdenSigns';
+import HomeHouseSign from '@/components/Products/HomeHouseSign';
+import MemorialPlaques from '@/components/Products/MemorialPlaques';
+import ProductBox from '@/components/Products/ProductBox';
+import PropertyFarmSigns from '@/components/Products/PropertyFarmSigns';
+import WeddingSigns from '@/components/Products/WeddingSigns';
 import { Tabs } from 'antd';
 const ProductsPage = () => {
   const onChange = (key) => {
@@ -7,23 +15,46 @@ const ProductsPage = () => {
   const items = [
     {
       key: '1',
-      label: `Tab 1`,
-      children: `Content of Tab Pane 1`, // this can be a component like <TabProduct/>
+      label: `Home/House Signs`,
+      children: <HomeHouseSign /> // this can be a component like <TabProduct/>
     },
     {
       key: '2',
-      label: `Tab 2`,
-      children: `Content of Tab Pane 2`,
+      label: `Garage Signs`,
+      children: <GarageSigns /> ,
     },
     {
       key: '3',
-      label: `Tab 3`,
-      children: `Content of Tab Pane 3`,
+      label: `BBQ / Smoker Signs`,
+      children: <BBQSmokerSigns />
     },
+    {
+      key: '4',
+      label: `Property / Farm Signs`,
+      children: <PropertyFarmSigns />
+    },
+    {
+      key: '5',
+      label: `Garden Signs`,
+      children: <GerdenSigns />
+    },
+    {
+      key: '6',
+      label: `Memorial Plaques`,
+      children: <MemorialPlaques />
+    },
+    {
+      key: '7',
+      label: `Wedding Signs`,
+      children: <WeddingSigns />
+    },
+    
   ];
   return (
-    <div>
+    <div className='bg-[#f0eeef]'>
+      <div className=' max-w-7xl m-auto p-5'>
       <Tabs defaultActiveKey='1' items={items} onChange={onChange} />
+    </div>
     </div>
   );
 };
