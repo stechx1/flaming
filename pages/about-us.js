@@ -74,13 +74,9 @@ const AboutUs = () => {
         </div>
 
         <div className='flex-1 flex items-center justify-center'>
-          <img src='/hero.png' alt='img' className=' ' />
+          <img src='/image 3.png' alt='img' className=' ' />
         </div>
       </div>
-
-      {/* <span className='text-black font-bold lg:text-[33px] sm:text-[30px] text-[22px] leading-tight mt-10'>
-        Heading
-      </span> */}
 
       <div className='flex flex-col gap-7 my-4'>
         <span className='text-gray-700 font-[400] text-base '>

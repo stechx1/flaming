@@ -1,7 +1,9 @@
 import React from 'react'
 import FeaturedBox from './FeaturedBox'
+import { useRouter } from 'next/router'
 
 const Featured = () => {
+  const router = useRouter()
   return (
     <div className='bg-[#f0eeef]  pb-10'>
 
@@ -39,7 +41,7 @@ const Featured = () => {
 
       </div>
       <div className='flex items-center mt-5 justify-center'>
-        <button className='text-white bg-[#003933] px-2 py-1'>See all Products</button>
+        <button onClick={() => router.push("/products")} className='text-white bg-[#003933] px-2 py-1'>See all Products</button>
       </div>
     </div>
   )
