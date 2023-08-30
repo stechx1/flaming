@@ -19,7 +19,7 @@ const FeaturedBox = ({ image }) => {
       <button onClick={() => { router.push({ pathname: '/productitem', query: { name: 'Engraved Olive Wood Hearts' }, }) }} className='bg-[#003933] text-white w-fit px-3 py-2 my-4 rounded-[4px]'>Explore</button>
 
         <div className='cursor-pointer'>
-          <img src="/cart1.png" alt="cart" className='' />
+          {/* <img src="/cart1.png" alt="cart" className='' /> */}
         </div>
 
       </div>
