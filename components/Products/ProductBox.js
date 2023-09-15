@@ -9,7 +9,7 @@ const ProductBox = ({ image }) => {
       <div style={{ backgroundImage: `url(${image})` }} className="bg-cover bg-center bg-no-repeat w-full h-[150px]">
 
       </div>
-      <span className='text-[#003933] text-[22px] font-[700]'>Engraved Olive Wood Hearts</span>
+      <span className='text-[#003933] text-[22px] font-[700]'>Custom Engraved Timber Signs</span>
 
       <span className='text-black font-[400]'>Beautifully grained and fit in the palm of you hand. No two hearts are the same.
       </span>
