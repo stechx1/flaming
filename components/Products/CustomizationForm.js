@@ -146,7 +146,7 @@ const CustomizationForm = () => {
                    purchase_units:[
                      {
                         custom_id:Math.floor(Math.random() * Math.floor(Math.random() * Date.now())),
-                        invoice_id:'123dsfsd345sdfsdfdfsf23',
+                        invoice_id:Math.floor(Math.random() * Math.floor(Math.random() * Date.now())),
                         description:'wood analysis',
                         amount:{
                            value:20,
