@@ -1,6 +1,13 @@
 import React from 'react';
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const CustomizationForm = () => {
+
+
+  const handleApprove =(data)=>{
+        
+      console.log(data)
+  }
   return (
     <div className='my-10 flex flex-col md:w-[80%]  gap-4'>
       <div className='flex sm:flex-row flex-col justify-between gap-10 '>
@@ -128,9 +135,44 @@ const CustomizationForm = () => {
         </div>
       </div>
 
-      <button className='text-white bg-[#003933] px-3 py-2 mt-4 rounded w-fit'>
-        Submit
-      </button>
+     
+      <PayPalScriptProvider  options={{ clientId: "ASRkVKUUnM5V8yuY8CxcIgsCbfxELi4fRhUoa7fpg-uJPI-JrWtOgKXXCEM5TJHIJoFfd0IZ9o5HG-TP",currency:'USD',intent:'capture'}}>
+          <div className='relative'>  
+         <button className='absolute left-0 text-white bg-[#003933] px-3 py-2 mt-4 rounded w-fit'>checkout</button>
+            <PayPalButtons className='opacity-0'  style={{ layout: "horizontal",label:"checkout"}} 
+             createOrder={(data,action)=>{
+               return action.order.create({
+                  intent:'CAPTURE',
+                   purchase_units:[
+                     {
+                        custom_id:Math.floor(Math.random() * Math.floor(Math.random() * Date.now())),
+                        invoice_id:'123dsfsd345sdfsdfdfsf23',
+                        description:'wood analysis',
+                        amount:{
+                           value:20,
+                           currency_code:'USD'
+                        },
+                        
+                        // payee:{
+                        //    email_address:'sb-hyvh827700298@business.example.com',merchant_id:'99ENDF7XVUJ5A'
+                        // }
+                     }
+                   ]
+               })
+             }}
+            onApprove={async(data,action)=>{
+                const order = await action.order.capture()
+                console.log("order ",order)
+                handleApprove(data)
+            }}
+
+              onError={(error)=>console.log("paypal error",error)}
+
+            />
+            
+        </div>  
+        </PayPalScriptProvider>
+     
     </div>
   );
 };
