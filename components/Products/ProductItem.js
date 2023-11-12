@@ -1,32 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Radio, Select } from 'antd';
 import CustomizationForm from './CustomizationForm';
 
+
 const ProductItem = () => {
-  const [price, setPrice] = useState(100);
+  
+  const router = useRouter();
+  const productDetails = JSON.parse(router.query.itemDetails)
+  console.log("product details ",productDetails)
+  const [price, setPrice] = useState(productDetails?.price);
   const [selectedWeatherproofing, setselectedWeatherproofing] = useState(0);
   const [selectedEdging, setSelectedEdging] = useState(0);
   const [selectedHanging, setSelectedHanging] = useState(0);
   const [selectedImageOption, setSelectedImageOption] = useState(0);
   const [selectedPostage, setSelectedPostage] = useState(0);
   const [showForm, setShowForm] = useState(false);
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
-  const router = useRouter();
+  
+
   return (
     <div className='flex flex-col my-5'>
       <div className='flex md:flex-row flex-col gap-3 justify-between'>
         <div className='flex flex-1'>
-          <img src='/custom-timber.jpg' className='rounded-md' alt='hero' />
+          <img src={`http://localhost:1339${productDetails?.heroImg?.data?.attributes?.url}`} className='rounded-md sm:h-96 w-full sm:object-cover ' alt='hero' />
         </div>
 
         <div className='flex flex-1 flex-col gap-3 px-5'>
-          <span className='text-[#003933] sm:text-[40px] text-[30px] font-[600]'>
-            {router.query.name}
+          <span className='text-[#003933] text-[24px] sm:text-[40px] font-[600]'>
+            {productDetails?.title}
           </span>
-          <span className='text-[#003933] font-bold text-7xl'>
+          <span className='text-[#003933] font-bold text-lg sm:text-4xl'>
             ${' '}
             {+price +
               +selectedWeatherproofing +
@@ -35,16 +38,10 @@ const ProductItem = () => {
               +selectedImageOption +
               +selectedPostage}
           </span>
-          <span>Base Price - $ 100 for size 60cm x 14cm x 20xm</span>
+          <span>Base Price - $ {productDetails?.price} {productDetails?.base_price_description}</span>
 
           <p className='text-gray-600'>
-            Any content, any image, any font catered for. Indoor, Outdoor nut
-            undercover or full outdoor signs. Various hanging options available.
-            Straight edge and Natural edge with burnt effect options or cut out
-            corners with border edge along with various hanging options. Using
-            Grade 1 outdoor use Australian Hardwood timbers such as, Blackbutt
-            Eucalyptus, Birdseye Stringy Bark Eucalyptus, Spotted Gum Eucalyptus
-            and Red Ironbark Eucalyptus
+            {productDetails?.description}
           </p>
 
           <p className='text-gray-600'>
@@ -56,21 +53,15 @@ const ProductItem = () => {
 
       <div className='my-12'>
         <h2 className='text-3xl font-bold mb-5'>Pictures</h2>
-        <div className='grid grid-cols-4 gap-8'>
-          <img src='/custom-wood/wood1.jpg' alt='wood1' />
-          <img src='/custom-wood/wood2.jpg' alt='wood2' />
-          <img src='/custom-wood/wood3.jpg' alt='wood3' />
-          <img src='/custom-wood/wood4.jpg' alt='wood4' />
-          <img src='/custom-wood/wood5.jpg' alt='wood5' />
-          <img src='/custom-wood/wood6.jpg' alt='wood6' />
-          <img src='/custom-wood/wood7.webp' alt='wood7' />
-          <img src='/custom-wood/wood8.jpg' alt='wood8' />
-          <img src='/custom-wood/wood9.jpg' alt='wood9' />
-          <img src='/custom-wood/wood10.jpg' alt='wood10' />
-          <img src='/custom-wood/wood11.jpg' alt='wood11' />
+        <div className='grid grid-cols-2 sm:grid-cols-4 gap-8'>
+           {productDetails?.childImages?.data?.map((picture,index)=>{
+                return(
+                    <img key={index} src={`http://localhost:1339${picture?.attributes?.url}`} className='rounded' />
+                )
+           })}
         </div>
       </div>
-      <span className='text-[#003933] font-bold text-4xl'>
+      <span className='text-[#003933] font-bold text-base sm:text-4xl'>
         Price: ${' '}
         {+price +
           +selectedWeatherproofing +

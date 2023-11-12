@@ -1,0 +1,1 @@
+export const baseImgUri = 'http://localhost:1339'
