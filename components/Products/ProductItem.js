@@ -2,46 +2,72 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Radio, Select } from 'antd';
 import CustomizationForm from './CustomizationForm';
+import { baseImgUri } from '@/constants/baseImgUri';
+import { axiosInstance } from '@/axios/axios';
 
 
 const ProductItem = () => {
   
   const router = useRouter();
-  const productDetails = JSON.parse(router.query.itemDetails)
-  console.log("product details ",productDetails)
-  const [price, setPrice] = useState(productDetails?.price);
+  const productId = router.query?.itemId
+  console.log("product details ",productId)
+  const [price, setPrice] = useState();
   const [selectedWeatherproofing, setselectedWeatherproofing] = useState(0);
   const [selectedEdging, setSelectedEdging] = useState(0);
   const [selectedHanging, setSelectedHanging] = useState(0);
   const [selectedImageOption, setSelectedImageOption] = useState(0);
   const [selectedPostage, setSelectedPostage] = useState(0);
   const [showForm, setShowForm] = useState(false);
+  const [ItemDetails,setItemDetails] = useState({
+        
+        heroImg:null,
+        childImages:[],
+        base_price_description:'',
+        description:'',
+        title:''
+
+  })
   
+  const totalPrice =+price +selectedWeatherproofing +selectedHanging +selectedEdging + selectedImageOption + selectedPostage
+  
+  useEffect(()=>{
+
+        const getProductDetails =async()=>{
+              
+          try {
+            const response = await axiosInstance.get(`/products/${productId}?populate=*`)
+            console.log("response ",response.data)
+            const getData = response.data?.data?.attributes
+            setPrice(response.data?.data?.attributes?.price)
+            setItemDetails({title:getData?.title,heroImg:getData?.heroImg?.data?.attributes?.url,childImages:getData?.childImages?.data,description:getData.description,base_price_description:getData?.base_price_description})
+          } catch (error) {
+            
+              console.log("failed to fetch data",error)
+          }
+        }
+       
+    getProductDetails()
+  },[productId])
 
   return (
     <div className='flex flex-col my-5'>
       <div className='flex md:flex-row flex-col gap-3 justify-between'>
         <div className='flex flex-1'>
-          <img src={`http://localhost:1339${productDetails?.heroImg?.data?.attributes?.url}`} className='rounded-md sm:h-96 w-full sm:object-cover ' alt='hero' />
+          <img src={`${baseImgUri}${ItemDetails.heroImg}`} className='rounded-md sm:h-96 w-full sm:object-cover ' alt='hero' />
         </div>
 
         <div className='flex flex-1 flex-col gap-3 px-5'>
           <span className='text-[#003933] text-[24px] sm:text-[40px] font-[600]'>
-            {productDetails?.title}
+            {ItemDetails.title}
           </span>
           <span className='text-[#003933] font-bold text-lg sm:text-4xl'>
             ${' '}
-            {+price +
-              +selectedWeatherproofing +
-              +selectedHanging +
-              +selectedEdging +
-              +selectedImageOption +
-              +selectedPostage}
+            {totalPrice}
           </span>
-          <span>Base Price - $ {productDetails?.price} {productDetails?.base_price_description}</span>
+          <span>Base Price - $ {price} {ItemDetails?.base_price_description}</span>
 
           <p className='text-gray-600'>
-            {productDetails?.description}
+            {ItemDetails?.description}
           </p>
 
           <p className='text-gray-600'>
@@ -54,9 +80,9 @@ const ProductItem = () => {
       <div className='my-12'>
         <h2 className='text-3xl font-bold mb-5'>Pictures</h2>
         <div className='grid grid-cols-2 sm:grid-cols-4 gap-8'>
-           {productDetails?.childImages?.data?.map((picture,index)=>{
+           {ItemDetails.childImages?.map((picture,index)=>{
                 return(
-                    <img key={index} src={`http://localhost:1339${picture?.attributes?.url}`} className='rounded' />
+                    <img key={index} src={`${baseImgUri}${picture?.attributes?.url}`} className='rounded' />
                 )
            })}
         </div>
@@ -117,12 +143,12 @@ const ProductItem = () => {
         <div className='flex flex-col gap-2'>
           <h2>Hanging Options</h2>
           <Radio.Group onChange={(e) => setSelectedHanging(e.target.value)}>
-            <div className=''>
+            
               <Radio value={0}>No fixings - $ 0</Radio>
-              <Radio value={0}>Hangers on back - $ 0</Radio>
-              <Radio value={0}>Pilot holes - $ 0</Radio>
+              <Radio value={1}>Hangers on back - $ 0</Radio>
+              <Radio value={2}>Pilot holes - $ 0</Radio>
               <Radio value={15}>Eyebolts and chain - $15</Radio>
-            </div>
+            
           </Radio.Group>
         </div>
 
@@ -185,7 +211,7 @@ const ProductItem = () => {
         </div>
       </div>
 
-      {showForm && <CustomizationForm />}
+      {showForm && <CustomizationForm totalPrice={totalPrice} selectedWeatherproofing={selectedWeatherproofing} selectedEdging={selectedEdging} selectedHanging={selectedHanging} selectedImageOption={selectedImageOption} selectedPostage={selectedPostage} />}
     </div>
   );
 };

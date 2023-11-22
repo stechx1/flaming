@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }) {
       <ConfigProvider theme={theme}>
         <Component {...pageProps} />
       </ConfigProvider>
-      <foote className='-full'>
+      <foote className='h-full'>
        <MainFooter />
       </foote>
     </div>

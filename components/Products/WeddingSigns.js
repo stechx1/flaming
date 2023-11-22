@@ -9,6 +9,7 @@ const WeddingSigns = () => {
 
   const [page, setPage] = useState(1)
   const {products,loading,total} = useCategoryProducts('Wedding',page)
+  
   if(loading){
 
     return(
@@ -26,7 +27,7 @@ else if(products.length == 0){
        
        products.map((item,index)=>{
             return(
-               <ProductBox key={index} image='' productData={item?.attributes} />
+               <ProductBox key={index} image='' productData={item?.attributes} id={item?.id}  />
             )
       }) }
     </div>

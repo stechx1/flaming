@@ -4,7 +4,8 @@ import { axiosInstance } from '@/axios/axios'
 import { useRouter } from 'next/router'
 import React, { useEffect } from 'react'
 
-const FeaturedBox = ({productDetails}) => {
+const FeaturedBox = ({productDetails,id}) => {
+
 const router = useRouter()
 const baseImgUrl = 'http://localhost:1339'
 
@@ -36,7 +37,7 @@ useEffect(()=>{
           </span>
 
           <div className='flex justify-between items-center absolute bottom-0'>
-          <button onClick={() => { router.push({ pathname: '/productitem', query: {itemDetails:JSON.stringify(productDetails)} }) }} className='bg-[#003933] text-white w-fit px-3 py-2 my-4 rounded-[4px]'>Explore</button>
+          <button onClick={() => { router.push({ pathname: '/productitem', query:{itemId:id} }) }} className='bg-[#003933] text-white w-fit px-3 py-2 my-4 rounded-[4px]'>Explore</button>
 
             <div className='cursor-pointer'>
               {/* <img src="/cart1.png" alt="cart" className='' /> */}

@@ -21,7 +21,7 @@ const [loading,setLoading] = useState(false)
                   }
 
             } catch (error) {
-                console.log("get data error", err);
+                console.log("get data error", error);
             }
             finally{
                   setLoading(false)

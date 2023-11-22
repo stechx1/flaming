@@ -29,11 +29,9 @@ function useCategoryProducts(category,pageNum) {
               finally{
                   setLoading(false)
               }
-         
-        }
+      }
 
       getProduct()
-
    },[category,pageNum])
 
   return {products,loading,total}

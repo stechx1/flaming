@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { axiosInstance } from "@/axios/axios";
 import useProducts from "@/hooks/useProducts";
 import ProdcutLoading from "../skeleton/ProdcutLoading";
+import NotFound from "../NotFound/NotFound";
 
 const Featured = () => {
   const router = useRouter();
@@ -17,12 +18,25 @@ const Featured = () => {
             Products
           </span>
         </div>
-       <div className="mt-5">
+       <div className="mt-5 max-w-[1420px] w-full mx-auto">
           <ProdcutLoading />
         </div> 
       </div>
     );
   }
+  else if(product.length == 0){
+         return(
+              <div className="bg-[#F0EEEF]">
+                <div className="flex justify-center py-7 bg-[#E7E1CC]">
+          <span className="text-[#003933] sm:text-[40px] text-[30px] text-center font-[600]">
+            Products
+          </span>
+        </div>
+                <NotFound/>
+              </div> 
+         )
+  }
+
   return (
     <div className="bg-[#f0eeef]  pb-10">
       {!loading && <div className="flex justify-center py-7 bg-[#E7E1CC]">
@@ -36,7 +50,7 @@ const Featured = () => {
             {product?.slice?.(0,6).map((item, index) => {
               return (
                 <div key={index}>
-                  <FeaturedBox productDetails={item?.attributes} />
+                  <FeaturedBox productDetails={item?.attributes} id={item.id}/>
                 </div>
               );
             })}

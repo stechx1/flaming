@@ -1,8 +1,8 @@
 import React, { memo } from 'react'
 import { useRouter } from 'next/router'
 import { baseImgUri } from '@/constants/baseImgUri';
-const ProductBox = memo(({ image,productData,desc })=>{
-
+const ProductBox = memo(({ image,productData,id})=>{
+ 
   const router = useRouter();
   
   return (
@@ -19,7 +19,7 @@ const ProductBox = memo(({ image,productData,desc })=>{
       </span>
 
       <div className='flex justify-between items-center absolute bottom-0'>
-        <button onClick={() => { router.push({ pathname: '/productitem', query: { itemDetails: JSON.stringify(productData) }}) }} className='bg-[#003933] text-white w-fit px-3 py-2 my-4 rounded-[4px]'>Explore</button>
+        <button onClick={() => { router.push({ pathname: '/productitem', query: { itemId:id }}) }} className='bg-[#003933] text-white w-fit px-3 py-2 my-4 rounded-[4px]'>Explore</button>
 
         <div className='cursor-pointer'>
           {/* <img src="/cart1.png" alt="cart" className='' /> */}

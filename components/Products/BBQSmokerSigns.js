@@ -25,7 +25,7 @@ const BBQSmokerSigns = () => {
           {
           products.map((item,index)=>{
                 return(
-                  <ProductBox key={index} image='' productData={item?.attributes} />
+                  <ProductBox key={index} image='' productData={item?.attributes} id={item?.id}  />
                 )
           }) }
 
