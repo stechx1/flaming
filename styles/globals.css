@@ -42,8 +42,7 @@ body{
      -webkit-box-orient: vertical;
      position: relative;
 }
-/* .button, [type='button']{
+.ant-modal{
 
-      background-color: #003933;
-      color: white;
-} */
+  width: 500px !important;
+}

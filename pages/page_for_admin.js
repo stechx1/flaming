@@ -1,12 +1,29 @@
 
 import CustomerTable from '@/components/adminComponent/CustomerTable'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useLayoutEffect } from 'react'
+
 
 function PageForAdmin() {
 
+  const navigate = useRouter()  
+  let token
+  if (typeof window !== 'undefined') {
+    // Perform localStorage action
+     token = localStorage.getItem('token')
+     if(!token){
+
+           navigate.replace('/')
+     }
+  }
+
+  console.log("tokennnn ",token)
+ 
+
+
   return(
       <div>
-           <CustomerTable/>
+           <CustomerTable token={token}/>
       </div>
   )
 }

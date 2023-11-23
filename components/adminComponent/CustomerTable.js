@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Space, Table, Tag } from "antd";
+import { Button, Space, Table, Tag } from "antd";
 import useFetchCustomer from "@/hooks/useFetchCustomer";
 import EmailPopUp from "./EmailPopUp";
 const { Column, ColumnGroup } = Table;
@@ -7,17 +7,17 @@ import { Input } from 'antd';
 import ProductPagination from "../pagination/ProductPagination";
 const { Search } = Input;
 
-function CustomerTable() {
+function CustomerTable({token}) {
   const [input, setInput] = useState("");
   const [pageNum, setPageNum] = useState(1);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   const [page,setPage] = useState(1)
-  const { customerData,total } = useFetchCustomer(pageNum, search);
+  const { customerData,total } = useFetchCustomer(pageNum, search,token);
 
   console.log("customer data ", customerData);
-  console.log("total customer ",total)
+  
   const handleInput = (e) => {
     setInput(e.target.value);
   };
@@ -41,7 +41,7 @@ function CustomerTable() {
         <form onSubmit={handleSearch} className="flex w-full justify-end my-1">
           <div className="max-w-sm w-full flex mx-1 ">
           
-            <Search onChange={(e) => handleInput(e)} className="outline-offset-0" placeholder="search..." enterButton='Search' size="middle" />
+            <Search onChange={(e) => handleInput(e)} className="outline-offset-0" placeholder="search..." enterButton={<button  style={{backgroundColor:'#003933',color:'white',padding:'8px 10px'}}>Search</button>} size="middle" />
     
           </div>
         </form>
@@ -60,7 +60,8 @@ function CustomerTable() {
             key={"sign_content"}
           />
           <Column title="Size" dataIndex="size" key="size" />
-          <Column title="totalPrice" dataIndex="totalPrice" key="totalPrice" />
+          <Column title="Total Price" dataIndex="totalPrice" key="totalPrice" />
+          <Column title="User Budget" dataIndex="budget" key="budget" />
           <Column
             title="Selected Edging"
             dataIndex="selectedEdging"
@@ -80,7 +81,7 @@ function CustomerTable() {
             title="Action"
             key={"Send"}
             render={(text,record) => (
-              <button onClick={()=>handlePopUp(record)} className="text-white bg-blue-500 px-2 py-1 text-sm whitespace-nowrap rounded">
+              <button onClick={()=>handlePopUp(record)} className="text-white bg-blue-500 px-2 py-2 text-sm whitespace-nowrap rounded">
                 Send Email
               </button>
             )}

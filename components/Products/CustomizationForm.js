@@ -13,6 +13,7 @@ const CustomizationForm = ({
   selectedHanging,
   selectedImageOption,
   electedPostage,
+  heroImg
 }) => {
   const [formData, setFormData] = useState({
     first_name: "",
@@ -24,6 +25,7 @@ const CustomizationForm = ({
     budget: "",
     image1: null,
     image2: null,
+
   });
   
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -69,6 +71,7 @@ const CustomizationForm = ({
     selectedImageOption,
     selectedWeatherproofing,
     electedPostage,
+    heroImg
   };
   data.append("data", JSON.stringify(newForm));
 
@@ -85,9 +88,8 @@ const CustomizationForm = ({
       id = createResponse.data?.data?.id;
       const recevierEmail = createResponse.data?.data?.attributes?.email;
       if (createResponse.status == 200) {
-        const response = await axios.post(
-          "http://localhost:1339/api/user/email",
-          {...createResponse?.data?.data?.attributes, to: formData.email, from: "husain.saqib31@gmail.com" }
+        const response = await axiosInstance.post("/user/email",
+          {...createResponse?.data?.data?.attributes, to: "husain.saqib31@gmail.com",from: formData.email }
         );
         setIsModalOpen(true);
       } else {
