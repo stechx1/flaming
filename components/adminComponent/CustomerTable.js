@@ -60,12 +60,23 @@ function CustomerTable({token}) {
             key={"sign_content"}
           />
           <Column title="Size" dataIndex="size" key="size" />
+          <Column title="Original Price" dataIndex="originalPrice"  key='originalPrice' />
           <Column title="Total Price" dataIndex="totalPrice" key="totalPrice" />
           <Column title="User Budget" dataIndex="budget" key="budget" />
           <Column
             title="Selected Edging"
             dataIndex="selectedEdging"
             key="selectedEdging"
+          />
+          <Column
+            title="Selected Wheather proofing"
+            dataIndex="selectedWeatherproofing"
+            key="selectedWeatherproofing"
+          />
+          <Column
+            title="Elected Postage"
+            dataIndex="electedPostage"
+            key="electedPostage"
           />
           <Column
             title="selected Hanging"

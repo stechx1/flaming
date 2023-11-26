@@ -13,7 +13,8 @@ const CustomizationForm = ({
   selectedHanging,
   selectedImageOption,
   electedPostage,
-  heroImg
+  heroImg,
+  price
 }) => {
   const [formData, setFormData] = useState({
     first_name: "",
@@ -35,9 +36,7 @@ const CustomizationForm = ({
     setIsModalOpen(false);
   };
 
-  const handleApprove = (data) => {
-    console.log(data);
-  };
+ 
 
   const handleForm = (type, e) => {
     if (type == "image1" || type == "image2") {
@@ -66,6 +65,7 @@ const CustomizationForm = ({
     size: formData.size,
     budget: formData.budget,
     totalPrice: totalPrice,
+    originalPrice:price,
     selectedEdging,
     selectedHanging,
     selectedImageOption,

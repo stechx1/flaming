@@ -7,7 +7,7 @@ export default async function middleware(req) {
   const protectedRoutes = ['/profile', '/dashboard'];
 
   // Check if the user is logged in
-  const isLoggedIn = true
+  const isLoggedIn = false
 
   // If the user is not logged in and trying to access a protected page, redirect to login
   if (!isLoggedIn && protectedRoutes.includes(pathname)) {

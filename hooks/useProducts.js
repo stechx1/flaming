@@ -1,5 +1,6 @@
 import { axiosInstance } from '@/axios/axios';
 import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify';
 
 function useProducts() {
 const [product,setProducts] = useState([])
@@ -21,7 +22,7 @@ const [loading,setLoading] = useState(false)
                   }
 
             } catch (error) {
-                console.log("get data error", error);
+                toast.error("Something went wrong. Please try again.",{style:{color:'white',backgroundColor:'red'}})
             }
             finally{
                   setLoading(false)

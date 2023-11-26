@@ -1,6 +1,7 @@
 import { axiosInstance } from "@/axios/axios";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 function LoginPage() {
 
@@ -26,7 +27,7 @@ function LoginPage() {
     try {
       const response = await axiosInstance.post(
         "http://localhost:1339/api/auth/local",
-        { identifier: "admin@gmail.com", password: "12341234" }
+        { identifier: inputs.identifier, password: inputs.password}
       );
       console.log("auth response ", response.data);
       router.push('/')
@@ -34,6 +35,14 @@ function LoginPage() {
       
     } catch (error) {
       console.log("login error ", error);
+      if(error?.response?.data?.error?.message){
+
+            toast.error("Invalid credentials.",{style:{color:'white',backgroundColor:'red'}})
+      }
+      else{
+           
+            toast.error("Something went wrong. Please try again",{style:{color:'white',backgroundColor:'red'}})
+      }
     }
   };
 

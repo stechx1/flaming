@@ -17,10 +17,6 @@ function PageForAdmin() {
      }
   }
 
-  console.log("tokennnn ",token)
- 
-
-
   return(
       <div>
            <CustomerTable token={token}/>

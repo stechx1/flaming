@@ -39,7 +39,9 @@ function useFetchCustomer(pageNum, searchTerm, token) {
               totalPrice: item?.attributes?.totalPrice,
               imageOne:item?.attributes?.image1?.data?.attributes?.url || '',
               imageTwo:item?.attributes?.image2?.data?.attributes?.url || '',
-              heroImg:item?.attributes?.heroImg
+              heroImg:item?.attributes?.heroImg,
+              originalPrice:item?.attributes?.originalPrice,
+              electedPostage:item?.attributes?.electedPostage
             };
 
             return data;

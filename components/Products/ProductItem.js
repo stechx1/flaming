@@ -231,7 +231,9 @@ const ProductItem = () => {
           selectedHanging={selectedHanging}
           selectedImageOption={selectedImageOption}
           selectedPostage={selectedPostage}
+          electedPostage={selectedPostage}
           heroImg={ItemDetails.heroImg}
+          price={price}
         />
       )}
     </div>

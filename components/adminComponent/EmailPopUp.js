@@ -1,7 +1,9 @@
 import { axiosInstance } from "@/axios/axios";
+import { generateRandomToken } from "@/utils/randomToken";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 import { Button, Modal } from "antd";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 
 function EmailPopUp({ isModalOpen, setIsModalOpen, userData }) {
   console.log("user data ",userData)
@@ -25,6 +27,13 @@ function EmailPopUp({ isModalOpen, setIsModalOpen, userData }) {
          budget:userData?.budget,
          has_pay:false,
          size:userData?.size,
+         selectedImageOption:userData?.selectedImageOption,
+         selectedHanging:userData?.selectedHanging,
+         selectedWeatherproofing:userData?.selectedWeatherproofing,
+         selectedEdging:userData?.selectedEdging,
+         electedPostage:userData?.electedPostage,
+         originalPrice:userData?.originalPrice,
+         verificationToken:generateRandomToken()
 
     }
     data.append("data", JSON.stringify(newData));
@@ -44,10 +53,12 @@ function EmailPopUp({ isModalOpen, setIsModalOpen, userData }) {
                first_name:getData?.first_name,
                last_name:getData?.last_name,
                sign_content:getData?.sign_content,
-               pay:getData?.budget,
+               pay:getData?.totalPrice,
                email:getData?.email,
                imagesArr:getData?.images?.data?.map(item=>{return item?.attributes?.url}),
-               size:getData?.size
+               size:getData?.size,
+               custId:id,
+               token:getData?.verificationToken
         }
 
         console.log(" email data ==> ",emailData)
@@ -68,7 +79,7 @@ const handleImge =(e)=>{
      const arrOfImage = Array.from(e.target.files)
      console.log("arrofImage ",arrOfImage.length)
      if(arrOfImage.length >3){
-            alert ("you are allowed to upload only three images")
+            toast.error('You can upload maximum three photos',{style:{color:'white',backgroundColor:'red'}})
      }
      else{
      setImages(arrOfImage)
@@ -84,8 +95,8 @@ console.log("array of object ",images)
         open={isModalOpen}
         onOk={handleConfirm}
         onCancel={handleCancel}
-        okButtonProps={{ style: { backgroundColor: "#003933"},disabled:images.length == 0 ? true:false }}
-        okText={<span className="text-white">Send Email</span>}
+        okButtonProps={{ style: { backgroundColor: "#003933",color:'white'},disabled:images.length == 0 ? true:false }}
+        okText={<span className="text-whited">Send Email</span>}
       >
         <div className="grid grid-cols-1  gap-y-2  gap-x-2">
                 <div>
@@ -103,11 +114,11 @@ console.log("array of object ",images)
                  </div>
                  <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
                      <span className="font-medium">Total Price:</span>
-                     <span>${userData?.budget}</span>
+                     <span>${userData?.totalPrice}</span>
                  </div>
                  <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
                      <span className="font-medium">Customer Budget:</span>
-                     <span>${userData?.totalPrice}</span>
+                     <span>${userData?.budget}</span>
                  </div>
                  <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
                      <span className="font-medium">Size :</span>
