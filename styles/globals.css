@@ -19,3 +19,30 @@
 *{
   font-family: 'reem kufi', cursive;
 }
+
+body{
+
+    overflow-x: hidden;
+}
+.product-skeleton-img{
+   
+      width: 100%;
+}
+
+.abc{
+
+    visibility: hidden;
+}
+.featuer_box_description{
+
+  overflow: hidden;
+     text-overflow: ellipsis;
+     display: -webkit-box;
+     -webkit-line-clamp: 3;
+     -webkit-box-orient: vertical;
+     position: relative;
+}
+.ant-modal{
+
+  width: 500px !important;
+}
