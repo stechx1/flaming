@@ -15,7 +15,7 @@ function useCategoryProducts(category, pageNum) {
         const res = await axiosInstance.get(
           `/products?pagination[page]=${pageNum}&pagination[pageSize]=9&populate=*&filters[category][$eqi]=${category}`
         );
-        console.log("grage sign", res.data?.data);
+        console.log("grage sign", res.data);
         if (res.data?.data) {
           setProducts(res.data?.data);
 

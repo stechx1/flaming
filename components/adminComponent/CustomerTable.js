@@ -33,8 +33,6 @@ function CustomerTable({token}) {
           console.log("user data ",data)
   }
 
-
-
   return (
     <div className="min-h-screen">
       <div className="flex flex-col  min-h-screen  max-w-7xl mx-auto mt-5">

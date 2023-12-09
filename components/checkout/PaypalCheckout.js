@@ -34,7 +34,7 @@ function PaypalCheckout({userData}) {
                         invoice_id:Math.floor(Math.random() * Math.floor(Math.random() * Date.now())),
                         description:'wood analysis',
                         amount:{
-                           value:userData || 20,
+                           value:"300.00",
                            currency_code:'USD'
                         },
                         

@@ -42,7 +42,8 @@ body{
      -webkit-box-orient: vertical;
      position: relative;
 }
-.ant-modal{
+/* .ant-modal{
 
-  width: 500px !important;
-}
+  width: 700px !important;
+  height: 400px !important;
+} */

@@ -91,7 +91,7 @@ function CheckoutDetails() {
                   intent: "capture",
                 }}
               >
-                <PaypalCheckout userData={userData?.totalPrice} />
+                <PaypalCheckout userData={userData?.estimated_price} />
               </PayPalScriptProvider>
               </div>
                 </div>
@@ -182,6 +182,11 @@ function CheckoutDetails() {
                       <span>Total price:</span>
                       <span>{userData?.totalPrice}</span>
                     </p>
+                  </div>
+                  <div className="my-5 h-0.5 w-full bg-white bg-opacity-30"></div>
+                  <div className="text-white font-semibold flex justify-between">
+                      <span>Estimated Price <small className="text-[#ffff81]">(amount to pay)</small>:</span>
+                      <span>${userData?.estimated_price}</span>
                   </div>
                 </div>
                 <div className="relative mt-10 text-white">
