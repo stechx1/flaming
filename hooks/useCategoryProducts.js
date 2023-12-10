@@ -13,7 +13,7 @@ function useCategoryProducts(category, pageNum) {
       setLoading(true);
       try {
         const res = await axiosInstance.get(
-          `/products?pagination[page]=${pageNum}&pagination[pageSize]=9&populate=*&filters[category][$eqi]=${category}`
+          `/products?pagination[page]=${pageNum}&pagination[pageSize]=9&populate=*&filters[categories_id]=${category}`
         );
         console.log("grage sign", res.data);
         if (res.data?.data) {
