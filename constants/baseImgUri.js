@@ -1,1 +1,1 @@
-export const baseImgUri = 'http://localhost:1339'
+export const baseImgUri = process.env.NEXT_PUBLIC_BASE_URL;

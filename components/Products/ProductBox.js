@@ -9,7 +9,7 @@ const ProductBox = memo(({ image,productData,id,signTitle})=>{
     <div className='bg-white h-[440px] flex flex-col rounded-[4px] p-[0.5rem] lg:w-[100%] px-5 relative'>
 
       {/* <img src="/hero.png" alt="car-img" className='w-2/3' /> */}
-      <div style={{ backgroundImage: `url(${baseImgUri}${productData?.heroImg?.data?.attributes?.url})` }} className="bg-cover bg-center bg-no-repeat w-full h-[220px]">
+      <div style={{ backgroundImage: `url(${productData?.heroImg?.data?.attributes?.url})` }} className="bg-cover bg-center bg-no-repeat w-full h-[220px]">
 
       </div>
       <span className='text-[#003933] text-[22px] font-[700] '>{productData?.title}</span>

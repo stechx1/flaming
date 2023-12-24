@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:1339/api',
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
 // Request interceptor

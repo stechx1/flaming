@@ -61,7 +61,7 @@ const ProductItem = () => {
       <div className="flex md:flex-row flex-col gap-3 justify-between">
         <div className="flex flex-1">
           <img
-            src={`${baseImgUri}${ItemDetails.heroImg}`}
+            src={`${ItemDetails.heroImg}`}
             className="rounded-md sm:h-96 w-full sm:object-cover "
             alt="hero"
           />
@@ -94,7 +94,7 @@ const ProductItem = () => {
             return (
               <img
                 key={index}
-                src={`${baseImgUri}${picture?.attributes?.url}`}
+                src={`${picture?.attributes?.url}`}
                 className="rounded"
               />
             );
