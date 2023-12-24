@@ -10,7 +10,7 @@ function CheckoutDetails() {
   const router = useRouter();
   const { id, token } = router.query;
   const [userData, setUserData] = useState(null);
-
+   console.log("all data ",userData)
   useEffect(() => {
     const abort = new AbortController();
     const signal = abort.signal;
@@ -31,7 +31,7 @@ function CheckoutDetails() {
     return () => abort.abort();
   }, [id]);
   
-
+console.log("user data ",userData)
   return (
     <div className="max-w-[1480px] w-full mx-auto mt-6">
       <div>
@@ -87,11 +87,10 @@ function CheckoutDetails() {
                 options={{
                   clientId:
                     "ATF_cy6zZwHn4mHPgBaNcKm3094XLjpIJswgGiUCJeYFhLKSJDBIK_ZqGUhwdkqXeuVROllNGK8cZceM",
-                  currency: "USD",
-                  intent: "capture",
+                 
                 }}
               >
-                <PaypalCheckout userData={userData?.totalPrice} />
+                <PaypalCheckout userData={userData?.estimated_price} />
               </PayPalScriptProvider>
               </div>
                 </div>
@@ -183,6 +182,11 @@ function CheckoutDetails() {
                       <span>{userData?.totalPrice}</span>
                     </p>
                   </div>
+                  <div className="my-5 h-0.5 w-full bg-white bg-opacity-30"></div>
+                  <div className="text-white font-semibold flex justify-between">
+                      <span>Estimated Price <small className="text-[#ffff81]">(amount to pay)</small>:</span>
+                      <span>${userData?.estimated_price}</span>
+                  </div>
                 </div>
                 <div className="relative mt-10 text-white">
                   <h3 className="mb-5 text-lg font-bold">Support</h3>
@@ -197,16 +201,7 @@ function CheckoutDetails() {
                     Call us now for payment related issues
                   </p>
                 </div>
-                <div className="relative mt-10 flex">
-                  <p className="flex flex-col">
-                    <span className="text-sm font-bold text-white">
-                      Money Back Guarantee
-                    </span>
-                    <span className="text-xs font-medium text-white">
-                      within 30 days of purchase
-                    </span>
-                  </p>
-                </div>
+               
               </div>
             </div>
             
@@ -219,7 +214,7 @@ function CheckoutDetails() {
                   intent: "capture",
                 }}
               >
-                <PaypalCheckout userData={userData?.totalPrice} />
+                <PaypalCheckout userData={userData?.estimated_price} />
               </PayPalScriptProvider>
               </div>
           </div>

@@ -6,14 +6,22 @@ import MemorialPlaques from "@/components/Products/MemorialPlaques";
 import ProductBox from "@/components/Products/ProductBox";
 import PropertyFarmSigns from "@/components/Products/PropertyFarmSigns";
 import WeddingSigns from "@/components/Products/WeddingSigns";
+import useCategoryList from "@/hooks/useCategoryList";
+import useProducts from "@/hooks/useProducts";
 import { Tabs, Breadcrumb } from "antd";
 import { useRouter } from "next/router";
 const ProductsPage = () => {
   const router = useRouter();
+  const {categoryList} =  useCategoryList()
+  
   const onChange = (key) => {
     console.log(key);
   }; 
   // Change this
+
+  const tabList = categoryList.map(item=>{
+       return {key:item?.id,label:item?.attributes?.Title,children:<HomeHouseSign signTitle={item?.id} />}
+  })
   const items = [
     {
       key: "1",
@@ -69,7 +77,7 @@ const ProductsPage = () => {
         />
       </div>
       <div className=" max-w-7xl m-auto p-5">
-        <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+        <Tabs defaultActiveKey="1" items={tabList} onChange={onChange} />
       </div>
     </div>
   );

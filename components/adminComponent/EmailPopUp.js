@@ -1,7 +1,7 @@
 import { axiosInstance } from "@/axios/axios";
 import { generateRandomToken } from "@/utils/randomToken";
 import { ArrowUpTrayIcon } from "@heroicons/react/24/outline";
-import { Button, Modal } from "antd";
+import { Button, Input, Modal } from "antd";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -9,12 +9,14 @@ function EmailPopUp({ isModalOpen, setIsModalOpen, userData }) {
   console.log("user data ",userData)
   const [isSending, setIsSending] = useState(false)
   const [images, setImages] = useState([])
+  const [estimatedPrice,setEstimatedPrice] = useState()
 
   const handleCancel = () => {
     setIsModalOpen(false);
     setImages([])
     
   };
+  console.log("estimated price ",estimatedPrice)
   const handleConfirm = async() => {
     const data = new FormData()
     const newData ={
@@ -33,7 +35,8 @@ function EmailPopUp({ isModalOpen, setIsModalOpen, userData }) {
          selectedEdging:userData?.selectedEdging,
          electedPostage:userData?.electedPostage,
          originalPrice:userData?.originalPrice,
-         verificationToken:generateRandomToken()
+         verificationToken:generateRandomToken(),
+         estimated_price:estimatedPrice
 
     }
     data.append("data", JSON.stringify(newData));
@@ -43,6 +46,7 @@ function EmailPopUp({ isModalOpen, setIsModalOpen, userData }) {
     }
     let id
     try {
+      setIsSending(true)
        const createConsumer = await axiosInstance.post('/consumer-responds?populate=*',data)
        console.log("create customer response => ",createConsumer)
        id = createConsumer.data?.data?.id
@@ -54,16 +58,18 @@ function EmailPopUp({ isModalOpen, setIsModalOpen, userData }) {
                last_name:getData?.last_name,
                sign_content:getData?.sign_content,
                pay:getData?.totalPrice,
+               budget:getData?.budget,
                email:getData?.email,
                imagesArr:getData?.images?.data?.map(item=>{return item?.attributes?.url}),
                size:getData?.size,
                custId:id,
-               token:getData?.verificationToken
+               token:getData?.verificationToken,
+               estimated_price:getData?.estimated_price
         }
 
         console.log(" email data ==> ",emailData)
         const response = await axiosInstance.post("/user/admin/email",{...emailData,to:userData?.email,from:'husain.saqib31@gmail.com'})
-        console.log("email send to customer ==> ",response.data)
+         toast.success("Email has been sent to customer successfully",{style:{color:'white',backgroundColor:'green'}})
       }
      
     setIsModalOpen(false);
@@ -71,6 +77,9 @@ function EmailPopUp({ isModalOpen, setIsModalOpen, userData }) {
     } catch (error) {
           alert("some thing went wrong")
      }
+     finally{
+        setIsSending(false)
+        }
 };
 
 
@@ -89,18 +98,35 @@ const handleImge =(e)=>{
 
 console.log("array of object ",images)
   return (
-    <div>
+    <div className="max-w-2xl" >
       <Modal
         title="Details"
         open={isModalOpen}
         onOk={handleConfirm}
         onCancel={handleCancel}
-        okButtonProps={{ style: { backgroundColor: "#003933",color:'white'},disabled:images.length == 0 ? true:false }}
-        okText={<span className="text-whited">Send Email</span>}
+        okButtonProps={{ style: { backgroundColor: "#003933",color:'white'},disabled:(images.length == 0 || !estimatedPrice || estimatedPrice <= 0 )? true:false }}
+        okText={<span className="text-white">{isSending?'Sending...' : 'Send Email'}</span>}
+        width={550}
+        
       >
-        <div className="grid grid-cols-1  gap-y-2  gap-x-2">
-                <div>
-                 <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
+        <div className="grid grid-cols-1 gap-y-2  gap-x-2  w-full">
+               <div className="flex flex-col gap-y-2">
+               <div className="flex flex-col gap-y-2">
+                    <label>Estimated Price</label>
+                    <Input  type={'number'} value={estimatedPrice} onChange={(e)=>setEstimatedPrice(e.target.value)} min={0}/>
+                  </div>
+                <div className="flex items-center gap-x-2"><h3>Pictures</h3><small>(Maximum 3 pictures)</small></div>
+               <label  htmlFor="image" className="w-[100%] h-60 flex item-center justify-center border-2 border-dashed rounded-md">
+                       
+                       <div className="h-full flex flex-col items-center justify-center">
+                       <ArrowUpTrayIcon width={50}/>
+                       <p>Upload</p>
+                        </div>
+                 </label>
+                  
+               </div>
+                <div className="mt-4 md:mt-0 min-w-fit hidden">
+                 <div className="flex justify-between border-b-[1px] py-1">
                      <span className="font-medium">Full Name :</span>
                      <span>{userData?.first_name} - {userData?.last_name}</span>
                  </div>
@@ -128,7 +154,12 @@ console.log("array of object ",images)
                      <span className="font-medium">Sign Content</span>
                      <span>{userData?.sign_content}</span>
                  </div>
-                 {images.length >0  &&
+                
+                 </div> 
+                 
+                 <input type="file" id="image" className="hidden" multiple accept="image/*" onChange={(e)=>handleImge(e)} />
+        </div>
+        {images.length >0  &&
                   <div className="flex flex-col mt-2 border-b-[1px] py-1">
                        <span className="font-medium">Uploaded Images</span>
                        <div className="flex flex-col gap-y-1 w-full">
@@ -140,16 +171,6 @@ console.log("array of object ",images)
                        </div>
                   </div>
                   }
-                 </div> 
-                 <label  htmlFor="image" className="w-[100%] h-full sm:h-60 flex item-center justify-center border-2 border-dashed rounded-md">
-                       
-                       <div className="h-full flex flex-col items-center justify-center">
-                       <ArrowUpTrayIcon width={50}/>
-                       <p>Upload</p>
-                        </div>
-                 </label>
-                 <input type="file" id="image" className="hidden" multiple accept="image/*" onChange={(e)=>handleImge(e)} />
-        </div>
       </Modal>
     </div>
   );

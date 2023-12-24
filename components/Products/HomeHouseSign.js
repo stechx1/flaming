@@ -7,9 +7,9 @@ import useCategoryProducts from '@/hooks/useCategoryProducts'
 import ProductPagination from '../pagination/ProductPagination'
 
 
-const HomeHouseSign = () => {
+const HomeHouseSign = ({signTitle}) => {
   const [page,setPage] = useState(1)
-  const {products,loading,total} = useCategoryProducts('Home',page)
+  const {products,loading,total} = useCategoryProducts(signTitle,page)
   console.log("products ",products)
   console.log("current page number ",page)
 
@@ -28,7 +28,7 @@ const HomeHouseSign = () => {
     <div className='grid min-h-[90vh] md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 gap-x-15'>
         {products?.map((item,index)=>{
             return(
-              <ProductBox key={index} image='' productData={item?.attributes} id={item?.id} />
+              <ProductBox key={index} image='' productData={item?.attributes} id={item?.id} signTitle={signTitle} />
             )
         })}
     </div>

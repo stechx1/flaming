@@ -1,7 +1,7 @@
 
 "use client"
 import { PayPalButtons, PayPalScriptProvider } from '@paypal/react-paypal-js'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import CheckoutSuccess from './CheckoutSuccess'
 import { useRouter } from 'next/router'
 
@@ -9,8 +9,11 @@ function PaypalCheckout({userData}) {
 
     const navigate = useRouter()
     const [isModalOpen, setIsModalOpen] = useState(false)
-    console.log("user data ===>>>>",userData)
+    const [price,setPrice] = useState(0)
+    useEffect(()=>{
+               setPrice(userData)
 
+    },[,userData])
     const handleApprove = (data) => {
         setIsModalOpen(true)
         
@@ -19,7 +22,8 @@ function PaypalCheckout({userData}) {
             setIsModalOpen(false)
             navigate.replace('/')
     }
-
+    console.log("price ",price)
+if(price){
   return (
    
           <div className='relative w-full'>  
@@ -34,7 +38,7 @@ function PaypalCheckout({userData}) {
                         invoice_id:Math.floor(Math.random() * Math.floor(Math.random() * Date.now())),
                         description:'wood analysis',
                         amount:{
-                           value:userData || 20,
+                           value:price,
                            currency_code:'USD'
                         },
                         
@@ -50,8 +54,15 @@ function PaypalCheckout({userData}) {
                 console.log("order ",order)
                 handleApprove(data)
             }}
-
-              onError={(error)=>console.log("paypal error",error)}
+            onCancel={async(data,action)=>{
+                  localStorage.removeItem('__paypal_storage__')
+                
+            }}
+              onError={(error)=>{
+                  console.log("error",error)
+                  localStorage.removeItem('__paypal_storage__')
+              }}
+            
 
             />
           <CheckoutSuccess handleOk={handleOk} isModalOpen={isModalOpen} />  
@@ -59,6 +70,7 @@ function PaypalCheckout({userData}) {
         </div>  
   
   )
+  }
 }
 
 export default PaypalCheckout

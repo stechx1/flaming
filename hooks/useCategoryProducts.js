@@ -13,15 +13,16 @@ function useCategoryProducts(category, pageNum) {
       setLoading(true);
       try {
         const res = await axiosInstance.get(
-          `/products?pagination[page]=${pageNum}&pagination[pageSize]=9&populate=*&filters[category][$eqi]=${category}`,{signal:Abort.signal}
+          `/products?pagination[page]=${pageNum}&pagination[pageSize]=9&populate=*&filters[categories_id]=${category}`
         );
-        console.log("grage sign", res.data?.data);
+        console.log("grage sign", res.data);
         if (res.data?.data) {
           setProducts(res.data?.data);
 
           setTotal(res.data?.meta?.pagination?.total);
         }
       } catch (error) {
+        console.log("error,",error)
         toast.error("Something went wrong. Please try again.",{style:{color:'white',backgroundColor:'red'}})
       } finally {
         setLoading(false);

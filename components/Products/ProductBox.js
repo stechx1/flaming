@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import { useRouter } from 'next/router'
 import { baseImgUri } from '@/constants/baseImgUri';
-const ProductBox = memo(({ image,productData,id})=>{
+const ProductBox = memo(({ image,productData,id,signTitle})=>{
  
   const router = useRouter();
   
