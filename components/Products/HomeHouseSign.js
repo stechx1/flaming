@@ -28,7 +28,7 @@ const HomeHouseSign = ({signTitle}) => {
     <div className='grid min-h-[90vh] md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 gap-x-15'>
         {products?.map((item,index)=>{
             return(
-              <ProductBox key={index} image='' productData={item?.attributes} id={item?.id} signTitle={signTitle} />
+              <ProductBox key={index} productData={item?.attributes} id={item?.id} signTitle={signTitle} />
             )
         })}
     </div>

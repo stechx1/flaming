@@ -1,12 +1,12 @@
 import React, { memo } from 'react'
 import { useRouter } from 'next/router'
 import { baseImgUri } from '@/constants/baseImgUri';
-const ProductBox = memo(({ image,productData,id,signTitle})=>{
+const ProductBox = memo(({productData,id})=>{
  
   const router = useRouter();
   
   return (
-    <div className='bg-white h-[440px] flex flex-col rounded-[4px] p-[0.5rem] lg:w-[100%] px-5 relative'>
+    <div className='bg-white h-[440px] flex flex-col rounded-[4px] lg:w-[100%] p-1 relative'>
 
       {/* <img src="/hero.png" alt="car-img" className='w-2/3' /> */}
       <div style={{ backgroundImage: `url(${baseImgUri}${productData?.heroImg?.data?.attributes?.url})` }} className="bg-cover bg-center bg-no-repeat w-full h-[220px]">

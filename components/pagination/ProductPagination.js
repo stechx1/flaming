@@ -3,6 +3,7 @@ import React from 'react'
 
 
 function ProductPagination({total,setPage,page}) {
+  console.log("pagination total ",total)
   return (
     <div>
       <Pagination

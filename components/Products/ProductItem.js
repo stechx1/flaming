@@ -72,7 +72,7 @@ const ProductItem = () => {
             {ItemDetails.title}
           </span>
           <span className="text-[#003933] font-bold text-lg sm:text-4xl">
-            $ {totalPrice}
+            $ {parseInt(totalPrice)}
           </span>
           <span>
             Base Price - $ {price} {ItemDetails?.base_price_description}

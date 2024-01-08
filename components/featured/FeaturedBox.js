@@ -9,22 +9,10 @@ const FeaturedBox = ({productDetails,id}) => {
 const router = useRouter()
 const baseImgUrl = 'http://localhost:1339'
 
-useEffect(()=>{
 
-     axiosInstance.get(`/products?filters[category][$eqi]=BBQ`)
-     .then(res=>{
-
-          console.log("bbq data ",res.data)
-     })
-     .catch(err=>{
-
-         console.log("BBq error",err)
-     })
-   
-},[])
 
   return (
-    <div className='bg-white h-[440px] relative flex flex-col rounded-[4px] p-[0.5rem] sm:w-[100%] px-5 '>
+    <div className='bg-white h-[440px] relative flex flex-col rounded-[4px]  sm:w-[100%] p-1'>
 
       {/* <img src="/hero.png" alt="car-img" className='w-2/3' /> */}
       <div style={{ backgroundImage: `url(${baseImgUrl}${productDetails?.heroImg?.data?.attributes?.url})` }} className="bg-center bg-no-repeat bg-cover w-full h-[220px]">

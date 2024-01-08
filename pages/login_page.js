@@ -26,7 +26,7 @@ function LoginPage() {
     data.append("data", JSON.stringify());
     try {
       const response = await axiosInstance.post(
-        "http://localhost:1339/api/auth/local",
+        "https://classic-chocolate-0495dd0cdb.strapiapp.com/api/auth/local",
         { identifier: inputs.identifier, password: inputs.password}
       );
       console.log("auth response ", response.data);

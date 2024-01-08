@@ -22,43 +22,43 @@ const ProductsPage = () => {
   const tabList = categoryList.map(item=>{
        return {key:item?.id,label:item?.attributes?.Title,children:<HomeHouseSign signTitle={item?.id} />}
   })
-  const items = [
-    {
-      key: "1",
-      label: `Home/House Signs`,
-      children: <HomeHouseSign />, // this can be a component like <TabProduct/>
-    },
-    {
-      key: "2",
-      label: `Garage Signs`,
-      children: <GarageSigns />,
-    },
-    {
-      key: "3",
-      label: `BBQ / Smoker Signs`,
-      children: <BBQSmokerSigns />,
-    },
-    {
-      key: "4",
-      label: `Property / Farm Signs`,
-      children: <PropertyFarmSigns />,
-    },
-    {
-      key: "5",
-      label: `Garden Signs`,
-      children: <GerdenSigns />,
-    },
-    {
-      key: "6",
-      label: `Memorial Plaques`,
-      children: <MemorialPlaques />,
-    },
-    {
-      key: "7",
-      label: `Wedding Signs`,
-      children: <WeddingSigns />,
-    },
-  ];
+  // const items = [
+  //   {
+  //     key: "1",
+  //     label: `Home/House Signs`,
+  //     children: <HomeHouseSign />, // this can be a component like <TabProduct/>
+  //   },
+  //   {
+  //     key: "2",
+  //     label: `Garage Signs`,
+  //     children: <GarageSigns />,
+  //   },
+  //   {
+  //     key: "3",
+  //     label: `BBQ / Smoker Signs`,
+  //     children: <BBQSmokerSigns />,
+  //   },
+  //   {
+  //     key: "4",
+  //     label: `Property / Farm Signs`,
+  //     children: <PropertyFarmSigns />,
+  //   },
+  //   {
+  //     key: "5",
+  //     label: `Garden Signs`,
+  //     children: <GerdenSigns />,
+  //   },
+  //   {
+  //     key: "6",
+  //     label: `Memorial Plaques`,
+  //     children: <MemorialPlaques />,
+  //   },
+  //   {
+  //     key: "7",
+  //     label: `Wedding Signs`,
+  //     children: <WeddingSigns />,
+  //   },
+  // ];
   return (
     <div className="bg-[#f0eeef] min-h-full">
       <div className="p-5">

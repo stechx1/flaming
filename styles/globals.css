@@ -42,6 +42,18 @@ body{
      -webkit-box-orient: vertical;
      position: relative;
 }
+td,th{
+    text-wrap: nowrap;
+}
+
+.gallery-description{
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
 /* .ant-modal{
 
   width: 700px !important;

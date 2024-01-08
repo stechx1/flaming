@@ -87,8 +87,9 @@ console.log("user data ",userData)
                 options={{
                   clientId:
                     "ATF_cy6zZwHn4mHPgBaNcKm3094XLjpIJswgGiUCJeYFhLKSJDBIK_ZqGUhwdkqXeuVROllNGK8cZceM",
-                 
-                }}
+                    currency: "USD",
+                  intent: "capture",
+                   }}
               >
                 <PaypalCheckout userData={userData?.estimated_price} />
               </PayPalScriptProvider>

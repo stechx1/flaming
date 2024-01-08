@@ -22,7 +22,8 @@ const [loading,setLoading] = useState(false)
                   }
 
             } catch (error) {
-                toast.error("Something went wrong. Please try again.",{style:{color:'white',backgroundColor:'red'}})
+               // toast.error("Something went wrong. Please try again.",{style:{color:'white',backgroundColor:'red'}})
+               console.log("something went wrong")
             }
             finally{
                   setLoading(false)
