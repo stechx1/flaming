@@ -61,7 +61,7 @@ const ProductItem = () => {
         <div className="flex flex-1">
           <img
             src={`${baseImgUri}${ItemDetails.heroImg}`}
-            className="rounded-md sm:h-96 w-full sm:object-cover "
+            className="rounded-md sm:h-[500px] w-full sm:object-cover "
             alt="hero"
           />
         </div>
@@ -82,30 +82,34 @@ const ProductItem = () => {
           
         </div>
       </div>
-      <div className="flex flex-col sm:flex-wrap md:flex-row items-center justify-center gap-x-3 gap-y-3 mt-[50px] ">
-          <button className="bg-[#003933] text-white py-2 px-2 rounded w-full md:w-[270px] text-xl md:text-xl" >Custome Signs</button>
-          <button className="bg-[#003933] text-white py-2 px-2 rounded w-full md:w-[270px] text-xl md:text-xl" >Design Your Own Sign</button>
-          {ItemDetails?.is_tember_sign && <button className="bg-[#003933] text-white py-2 px-2 rounded w-full md:w-[270px] text-xl md:text-xl" >Sign Pricing Guide</button>}
-          <div></div>
-          <div></div>
-      </div>
-      <div className="my-12 flex flex-col gap-y-2">
+      <div className="flex items-start gap-x-10 flex-col-reverse md:flex-row">
+      <div className="my-12 flex flex-col gap-y-2 w-[100%] md:w-[50%] ">
         <h2 className="text-3xl font-bold mb-5">Gallery</h2>
-        <p className="text-gray-600 text-lg">
-            Below are some picture of the sign
+        <p className="text-gray-600 text-xl">
+            Gallery Images
           </p>
-        <div className="flex flex-wrap gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 flex-wrap gap-8">
           {ItemDetails.childImages?.map((picture, index) => {
             return (
               <img
                 key={index}
                 src={`${baseImgUri}${picture?.attributes?.url}`}
-                className="rounded max-w-[420px] flex-1 bg-cover"
+                className="rounded max-w-[100%] sm:w-[100%] sm:max-w-[280px] flex-1 bg-cover"
               />
             );
           })}
         </div>
+        <button className="bg-[#003933] text-white py-2 px-2 rounded w-full  text-xl md:text-xl flex-1 my-4" >Proceed</button>
       </div>
+      <div className="flex flex-col items-center justify-center gap-x-3 gap-y-3 mt-[150px] w-[100%] md:w-[50%] ">
+        
+          <button className="bg-[#003933] text-white py-2 px-2 rounded w-full md:w-[90%] text-xl md:text-xl flex-1" >Custome Signs</button>
+          <button className="bg-[#003933] text-white py-2 px-2 rounded w-full md:w-[90%] text-xl md:text-xl" >Design Your Own Sign</button>
+          {ItemDetails?.is_tember_sign && <button className="bg-[#003933] text-white py-2 px-2 rounded w-full md:w-[90%] text-xl md:text-xl" >Sign Pricing Guide</button>}
+          
+      </div>
+      </div>
+      
       <span className="text-[#003933] font-bold text-base sm:text-4xl hidden">
         Price: ${" "}
         {+price +

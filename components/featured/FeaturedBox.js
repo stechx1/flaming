@@ -7,9 +7,10 @@ import React, { useEffect } from 'react'
 const FeaturedBox = ({productDetails,id}) => {
 
 const router = useRouter()
-const baseImgUrl = 'http://localhost:1339'
+const baseImgUrl = process.env.NEXT_PUBLIC_IMG_URL
 
-
+console.log("base url ",baseImgUrl)
+console.log("product detauls ",productDetails)
 
   return (
     <div className='bg-white h-[440px] relative flex flex-col rounded-[4px]  sm:w-[100%] p-1'>

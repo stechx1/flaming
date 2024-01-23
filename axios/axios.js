@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: 'http://localhost:1339/api',
-  // baseURL:'https://classic-chocolate-0495dd0cdb.strapiapp.com/api'
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
 // Request interceptor
