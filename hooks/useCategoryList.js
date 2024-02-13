@@ -9,7 +9,8 @@ function useCategoryList() {
             const getList =async()=>{
 
                  const response = await axiosInstance.get('/categories')
-                 console.log("list response ",response.data)
+                 
+                 
                  setCategoryList(response.data?.data)
             }
            getList() 

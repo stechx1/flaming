@@ -10,57 +10,56 @@ import useCategoryList from "@/hooks/useCategoryList";
 import useProducts from "@/hooks/useProducts";
 import { Tabs, Breadcrumb } from "antd";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 const ProductsPage = () => {
   const router = useRouter();
-  const {categoryList} =  useCategoryList()
+  const itemId = router.query.itemId 
+  const categoryType = router.query.type
   
-  const onChange = (key) => {
-    console.log(key);
-  }; 
-  // Change this
+  console.log("item id ",itemId)
+  
+  const { categoryList } = useCategoryList();
+  const [currentId,setCurrentId] = useState(itemId)
+  const [page,setPage] = useState(1)
+ 
+  const [type,setType] = useState(categoryType)
+  console.log("current Type ",categoryType)
+  
+  const handleTab = (key,ty) => {
+    setPage(1)
+    console.log("type   ",ty)
+    setCurrentId(key)
+    setType(ty)
+   
 
-  const tabList = categoryList.map(item=>{
-       return {key:item?.id,label:item?.attributes?.Title,children:<HomeHouseSign signTitle={item?.id} />}
-  })
-  // const items = [
-  //   {
-  //     key: "1",
-  //     label: `Home/House Signs`,
-  //     children: <HomeHouseSign />, // this can be a component like <TabProduct/>
-  //   },
-  //   {
-  //     key: "2",
-  //     label: `Garage Signs`,
-  //     children: <GarageSigns />,
-  //   },
-  //   {
-  //     key: "3",
-  //     label: `BBQ / Smoker Signs`,
-  //     children: <BBQSmokerSigns />,
-  //   },
-  //   {
-  //     key: "4",
-  //     label: `Property / Farm Signs`,
-  //     children: <PropertyFarmSigns />,
-  //   },
-  //   {
-  //     key: "5",
-  //     label: `Garden Signs`,
-  //     children: <GerdenSigns />,
-  //   },
-  //   {
-  //     key: "6",
-  //     label: `Memorial Plaques`,
-  //     children: <MemorialPlaques />,
-  //   },
-  //   {
-  //     key: "7",
-  //     label: `Wedding Signs`,
-  //     children: <WeddingSigns />,
-  //   },
-  // ];
+  };
+
+  useEffect(() => {
+    if (!itemId) {
+      // If itemId is not present, set currentId to the id of the first element in categoryList
+      setCurrentId(categoryList[0]?.id);
+    } else {
+      setCurrentId(itemId);
+    }
+    
+  }, [itemId]);
+  useEffect(() => {
+    if (!categoryType) {
+      // If itemId is not present, set currentId to the id of the first element in categoryList
+      setType("Custom Wood Signs");
+    } else {
+      setType(categoryType);
+    }
+    
+  }, [categoryType]);
+
+ 
+
+ 
+
   return (
-    <div className="bg-[#f0eeef] min-h-full">
+    <div className="bg-[#f0eeef] min-h-full ">
+      <div className="max-w-7xl m-auto">
       <div className="p-5">
         <Breadcrumb
           items={[
@@ -76,9 +75,15 @@ const ProductsPage = () => {
           ]}
         />
       </div>
-      <div className=" max-w-7xl m-auto p-5">
-        <Tabs defaultActiveKey="1" items={tabList} onChange={onChange} />
+      <div className=" my-6 mx-1">
+        <div className="flex flex-wrap gap-3">
+          {categoryList.map((item,index)=>(
+                <button onClick={()=>handleTab(item?.id,item?.attributes?.type)} key={index} className={`border p-2 rounded min-w-[100px] ${type == item?.attributes?.type  ? 'bg-[#003933] shadow-xl text-white' :' border-slate-600 shadow-xl text-black'} `}>{item?.attributes?.Title}</button>
+          ))}
       </div>
+      </div>
+      <HomeHouseSign signTitle={currentId}  type={type} page={page} setPage={setPage} />
+    </div>
     </div>
   );
 };

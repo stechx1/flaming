@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 function Gallery() {
    
    const [page,setPage] = useState(1)
-   const {gallery,total} = useGallery(page)
+  //  const {gallery,total} = useGallery(page)
    console.log("total ",total)
   return (
     <div className='max-w-7xl my-3 mx-1 sm:mx-auto min-h-screen p-0 sm:p-2'>

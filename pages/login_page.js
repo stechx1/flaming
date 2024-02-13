@@ -25,7 +25,7 @@ function LoginPage() {
     data.append('data', JSON.stringify());
     try {
       const response = await axiosInstance.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/local`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/local`,
         { identifier: inputs.identifier, password: inputs.password }
       );
       console.log('auth response ', response.data);

@@ -10,13 +10,13 @@ function useFetchCustomer(pageNum, searchTerm, token) {
   useEffect(() => {
     const getCustomer = async () => {
       const api = searchTerm
-        ? `/consumers?populate=*&filters[$or][0][first_name][$containsi]=${searchTerm}&filters[$or][1][last_name][$containsi]=${searchTerm}&filters[$or][2][email][$containsi]=${searchTerm}&sort[1]=first_name`
-        : `/consumers?pagination[page]=${pageNum}&pagination[pageSize]=12&sort[1]=first_name&populate=*`;
+        ? `/customer-custom-designs?populate=*&filters[$or][0][first_name][$containsi]=${searchTerm}&filters[$or][1][last_name][$containsi]=${searchTerm}&filters[$or][2][email][$containsi]=${searchTerm}&sort[1]=first_name`
+        : `/customer-custom-designs?pagination[page]=${pageNum}&pagination[pageSize]=12&sort[1]=first_name&populate=*`;
       try {
         const response = await axiosInstance.get(api, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        console.log("customer response ", response.data);
+        console.log("consumer response ",response.data)
 
         if (response.data.data) {
           setTotal(response.data?.meta?.pagination?.total);
@@ -27,21 +27,19 @@ function useFetchCustomer(pageNum, searchTerm, token) {
               first_name: item?.attributes?.first_name,
               last_name: item?.attributes?.last_name,
               email: item?.attributes?.email,
-              has_pay: item?.attributes?.has_pay,
+             
               budget: item?.attributes?.budget,
               phone: item?.attributes?.phone,
-              selectedEdging: item?.attributes?.selectedEdging || "-",
-              selectedHanging: item?.attributes?.selectedHanging || "-",
-              selectedImageOption: item?.attributes?.selectedImageOption || "-",
-              selectedWeatherproofing:item?.attributes?.selectedWeatherproofing || "-",
+              sign_edge: item?.attributes?.sign_edge || "-",
+              fixing_option: item?.attributes?.fixing_option || "-",
+              indoor_outdoor:item?.attributes?.selectedWeatherproofing || "-",
               sign_content: item?.attributes?.sign_content,
               size: item?.attributes?.size,
-              totalPrice: item?.attributes?.totalPrice,
-              imageOne:item?.attributes?.image1?.data?.attributes?.url || '',
-              imageTwo:item?.attributes?.image2?.data?.attributes?.url || '',
-              heroImg:item?.attributes?.heroImg,
-              originalPrice:item?.attributes?.originalPrice,
-              electedPostage:item?.attributes?.electedPostage
+              price: item?.attributes?.price,
+              image:item?.attributes?.image?.data?.attributes?.url || '',
+              compartments:item?.attributes?.compartments,
+              Postage:item?.attributes?.Postage,
+              type:item?.attributes?.type
             };
 
             return data;

@@ -10,12 +10,7 @@ const ProductItem = () => {
   const productId = router.query?.itemId;
   console.log("product details ", productId);
   const [price, setPrice] = useState();
-  const [selectedWeatherproofing, setselectedWeatherproofing] = useState(0);
-  const [selectedEdging, setSelectedEdging] = useState(0);
-  const [selectedHanging, setSelectedHanging] = useState(0);
-  const [selectedImageOption, setSelectedImageOption] = useState(0);
-  const [selectedPostage, setSelectedPostage] = useState(0);
-  const [showForm, setShowForm] = useState(false);
+  
   const [ItemDetails, setItemDetails] = useState({
     heroImg: null,
     childImages: [],
@@ -24,36 +19,59 @@ const ProductItem = () => {
     title: "",
   });
 
-  const totalPrice = price 
+  const totalPrice = price;
+  let item;
+  if (typeof window !== "undefined") {
+    // Perform localStorage action
+    item = localStorage.getItem("type");
+  }
+
 
   useEffect(() => {
     if (productId) {
-    const getProductDetails = async () => {
-      try {
-        const response = await axiosInstance.get(
-          `/products/${productId}?populate=*`
-        );
-        console.log("response ", response.data);
-        const getData = response.data?.data?.attributes;
-        setPrice(response.data?.data?.attributes?.price);
-        setItemDetails({
-          title: getData?.title,
-          heroImg: getData?.heroImg?.data?.attributes?.url,
-          childImages: getData?.gallery?.data,
-          description: getData.description,
-          size:getData?.initial_size,
-          is_tember_sign:getData?.categories_id?.data?.attributes?.is_tember_sign
-         
-        });
-      } catch (error) {
-        console.log("failed to fetch data", error);
-      }
-    };
-    
-    getProductDetails();
-  }
+      const api =
+        item == "Custom Wood Signs"
+          ? `/products/${productId}?populate=*`
+          : item == "Custom Wood Boxes"
+          ? `/boxes/${productId}?populate=*`
+          : item == "Chopping/Serving Boards"
+          ? `/chopping-serving-boards/${productId}?populate=*`
+          : item == "Timber serving Board"
+          ? `/timber-serving-boards/${productId}?populate=*`
+          : item == "Olive Wood Hearts"
+          ? `/olive-wood-hearts/${productId}?populate=*`
+          : `/products/${productId}?populate=*`;
+      const getProductDetails = async () => {
+        try {
+          const response = await axiosInstance.get(api);
+          console.log("response ", response.data);
+          const id = response.data?.data?.id;
+          const getData = response.data?.data?.attributes;
+          setPrice(response.data?.data?.attributes?.price);
+          setItemDetails({
+            id: id,
+            title: getData?.title,
+            heroImg: getData?.heroImg?.data?.attributes?.url,
+            childImages: getData?.gallery?.data,
+            description: getData.description,
+            size: getData?.initial_size,
+            type: getData?.categories_id?.data?.attributes?.type,
+            Postage:getData?.Postage,
+            postage_price:getData?.postage_price,
+            timber_specie:getData?.timber_specie || null
+          });
+        } catch (error) {
+          console.log("failed to fetch data", error);
+        }
+      };
 
+      getProductDetails();
+    }
   }, [productId]);
+
+  const handleNavigate = () => {
+    router.push({ pathname: "/detail_form", query: { itemId: productId } });
+  };
 
   return (
     <div className="flex flex-col my-5">
@@ -61,7 +79,7 @@ const ProductItem = () => {
         <div className="flex flex-1">
           <img
             src={`${baseImgUri}${ItemDetails.heroImg}`}
-            className="rounded-md sm:h-[500px] w-full sm:object-cover "
+            className="rounded-md  w-full sm:object-cover "
             alt="hero"
           />
         </div>
@@ -71,180 +89,104 @@ const ProductItem = () => {
             {ItemDetails.title}
           </span>
           <span className="text-[#003933] font-bold text-lg sm:text-2xl">
-           Price - $ {parseInt(totalPrice)}
-          </span>
-          
-          <span className="text-[#003933] font-bold text-lg sm:text-[20px]">
-            Size - {ItemDetails?.size}
+            Price - $ {parseInt(totalPrice)}
           </span>
 
-          <p className="text-gray-600">{ItemDetails?.description}</p>
-          
+          {ItemDetails?.size && <div className="flex gap-x-2 items-center" >
+           <span className="text-[#003933] font-bold text-lg sm:text-[20px]"> Size - {ItemDetails?.size}</span>
+           {ItemDetails?.timber_specie && <span className="text-[#003933] font-bold text-lg sm:text-[20px]">  {ItemDetails?.timber_specie}</span>}
+          </div>}
+
+          <p className="text-[#003933] font-bold text-base sm:text-xl">Postage : {ItemDetails?.Postage} {ItemDetails?.postage_price != 0 && `$${ItemDetails?.postage_price}`}</p>
+          <p className="text-gray-600 text-lg">{ItemDetails?.description}</p>
         </div>
       </div>
-      <div className="flex items-start gap-x-10 flex-col-reverse md:flex-row">
-      <div className="my-12 flex flex-col gap-y-2 w-[100%] md:w-[50%] ">
-        <h2 className="text-3xl font-bold mb-5">Gallery</h2>
-        <p className="text-gray-600 text-xl">
-            Gallery Images
-          </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 flex-wrap gap-8">
-          {ItemDetails.childImages?.map((picture, index) => {
-            return (
-              <img
-                key={index}
-                src={`${baseImgUri}${picture?.attributes?.url}`}
-                className="rounded max-w-[100%] sm:w-[100%] sm:max-w-[280px] flex-1 bg-cover"
-              />
-            );
-          })}
+      <div className="flex items-start gap-x-10 flex-col-reverse">
+        <div
+          className={`my-12 flex flex-col gap-y-2 w-[100%] md:${
+            item == "Custom Wood Boxes" || item == "Custom Wood Signs"
+              ? "w-[50%]"
+              : "w-[100%]"
+          }`}
+        >
+          <h2 className="text-3xl font-bold mb-5">Gallery</h2>
+          <p className="text-gray-600 text-xl">Gallery Images</p>
+          <div className={`flex flex-wrap gap-8`}>
+            {ItemDetails.childImages?.map((picture, index) => {
+              return (
+                <img
+                  key={index}
+                  src={`${baseImgUri}${picture?.attributes?.url}`}
+                  className="rounded max-w-[100%] sm:w-[100%] sm:max-w-[280px] flex-1 bg-cover"
+                />
+              );
+            })}
+          </div>
+          <div className="flex justify-center">
+            <button
+              onClick={handleNavigate}
+              className="bg-[#003933] text-white py-2 px-2 rounded max-w-sm w-full  text-xl md:text-xl flex-1 my-4"
+            >
+              Proceed
+            </button>
+          </div>
         </div>
-        <button className="bg-[#003933] text-white py-2 px-2 rounded w-full  text-xl md:text-xl flex-1 my-4" >Proceed</button>
-      </div>
-      <div className="flex flex-col items-center justify-center gap-x-3 gap-y-3 mt-[150px] w-[100%] md:w-[50%] ">
-        
-          <button className="bg-[#003933] text-white py-2 px-2 rounded w-full md:w-[90%] text-xl md:text-xl flex-1" >Custome Signs</button>
-          <button className="bg-[#003933] text-white py-2 px-2 rounded w-full md:w-[90%] text-xl md:text-xl" >Design Your Own Sign</button>
-          {ItemDetails?.is_tember_sign && <button className="bg-[#003933] text-white py-2 px-2 rounded w-full md:w-[90%] text-xl md:text-xl" >Sign Pricing Guide</button>}
-          
-      </div>
-      </div>
-      
-      <span className="text-[#003933] font-bold text-base sm:text-4xl hidden">
-        Price: ${" "}
-        {+price +
-          +selectedWeatherproofing +
-          +selectedHanging +
-          +selectedEdging +
-          +selectedImageOption +
-          +selectedPostage}
-      </span>
-      <div className="p-5 my-12 hidden flex-col gap-6 border xl:w-1/2 border-[#BDBDBD] rounded-xl " >
-        <div className="flex gap-6 items-center">
-          <p className="text-[#003933] font-bold my-3">Choose Size</p>
-          <Select
-            defaultValue="60 cm x 12cm x 12cm"
-            style={{ width: 230 }}
-            onChange={(value) => {
-              console.log(value);
-              setPrice(value);
-            }}
-            options={[
-              { value: "200", label: "60 cm x 12cm x 12cm - $ 200" },
-              { value: "300", label: "60 cm x 12cm x 12cm - $ 300" },
-              { value: "400", label: "60 cm x 12cm x 12cm - $ 400" },
-            ]}
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h2>
-            Choose Weatherproofing (Indoor varnish is included in base price)
-          </h2>
-          <Radio.Group
-            onChange={(e) => setselectedWeatherproofing(e.target.value)}
-          >
-            <div className="">
-              <Radio value={15}>Semi weatherprooofed - $15</Radio>
-              <Radio value={20}>Full weatherprooofed - $20</Radio>
+        <div
+          style={{
+            display:
+              item == "Custom Wood Boxes" || item == "Custom Wood Signs"
+                ? "flex"
+                : "none",
+          }}
+          className={`flex flex-col sm:flex-row  items-center justify-center gap-x-3 gap-y-3 mt-[150px] w-[100%] `}
+        >
+          {item == "Custom Wood Signs" && (
+            <div className="flex-1">
+            <p className="text-lg text-center">
+            To get an idea of the price of the signs, click the button to view the sign pricing guide
+            </p>
+            <button
+              onClick={() => {
+                router.push({
+                  pathname: "/custome-design",
+                });
+              }}
+              className="bg-[#003933] text-white py-2 px-2 rounded  text-base md:text-xl w-full"
+            >
+              Sign Pricing Guide
+            </button>
             </div>
-          </Radio.Group>
-        </div>
+          )}
 
-        <div className="flex flex-col gap-2">
-          <h2>Choose Sign Edging (Straight edge is included in base price)</h2>
-          <Radio.Group onChange={(e) => setSelectedEdging(e.target.value)}>
-            <div className="">
-              <Radio value={10}>Straight Burnt Edge - $ 10</Radio>
-              <Radio value={20}>Natural Edge - $20</Radio>
-              <Radio value={25}>Burnt Natural Edge - $25</Radio>
-              <Radio value={35}>Cut corners with border edge - $35</Radio>
+          {item == "Custom Wood Signs" && (
+            <div className="flex-1">
+               <p className="text-lg text-center">
+              Click on the button below and fill out the form with details of your sign. I will send back a design draft and quote for your consideration.
+               </p>
+              <button
+              onClick={() => router.push({ pathname: "/detail_custom_form" })}
+              className="bg-[#003933] text-white py-2 px-2 rounded  text-base md:text-xl w-full"
+            >
+              Design Your Own Sign
+            </button>
             </div>
-          </Radio.Group>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h2>Hanging Options</h2>
-          <Radio.Group onChange={(e) => setSelectedHanging(e.target.value)}>
-            <Radio value={0}>No fixings - $ 0</Radio>
-            <Radio value={1}>Hangers on back - $ 0</Radio>
-            <Radio value={2}>Pilot holes - $ 0</Radio>
-            <Radio value={15}>Eyebolts and chain - $15</Radio>
-          </Radio.Group>
-        </div>
-
-        {/* <div className='flex flex-col gap-2'>
-          <h2>Hanging Options</h2>
-          <Radio.Group onChange={(value) => console.log(value)} value={price}>
-            <div className=''>
-              <Radio value={0}>No fixings - $ 0</Radio>
-              <Radio value={0}>Hangers on back - $ 0</Radio>
-              <Radio value={0}>Pilot holes - $ 0</Radio>
-              <Radio value={15}>Eyebolts and chain - $15</Radio>
+            
+          )}
+          {item == "Custom Wood Boxes" && (
+            <div>
+              <p className="text-lg text-center">
+               Click on the button below and fill out the form with details of your Box. I will send back a design draft and quote for your consideration.
+               </p>
+            <button
+              onClick={() => router.push({ pathname: "custome-box" })}
+              className="bg-[#003933] text-white py-2 px-2 rounded  text-xl md:text-xl"
+            >
+              Design Your Own Box
+            </button>
             </div>
-          </Radio.Group>
-        </div> */}
-
-        <div className="flex flex-col gap-2">
-          <h2>Images: </h2>
-          <Radio.Group onChange={(e) => setSelectedImageOption(e.target.value)}>
-            <div className="">
-              <Radio value={0}>No Image - $ 0</Radio>
-              <Radio value={10}>Basic clipart logo type image - $ 10</Radio>
-              <Radio value={20}>Photo image - $ 20</Radio>
-            </div>
-          </Radio.Group>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <h2>Postage: </h2>
-          <Radio.Group onChange={(e) => setSelectedPostage(e.target.value)}>
-            <div className="">
-              <Radio value={0}>
-                Australia post Standard postage (Included in base price) - $ 0
-              </Radio>
-              <Radio value={20}>Australia Post Express postage - $ 20</Radio>
-            </div>
-          </Radio.Group>
-          <p className="text-sm underline">
-            Signs over 1m need courier which will need quoting on size and
-            weight of sign
-          </p>
-        </div>
-
-        <div className="flex gap-8 items-center">
-          <button
-            onClick={() => setShowForm(true)}
-            className="bg-[#FE5B26] text-white w-fit px-3 py-2 my-4 rounded-[4px]"
-          >
-            Buy Now
-          </button>
-
-          <p>
-            ${" "}
-            {+price +
-              +selectedWeatherproofing +
-              +selectedHanging +
-              +selectedEdging +
-              +selectedImageOption +
-              +selectedPostage}
-          </p>
+          )}
         </div>
       </div>
-
-      {showForm && (
-        <CustomizationForm
-          totalPrice={totalPrice}
-          selectedWeatherproofing={selectedWeatherproofing}
-          selectedEdging={selectedEdging}
-          selectedHanging={selectedHanging}
-          selectedImageOption={selectedImageOption}
-          selectedPostage={selectedPostage}
-          electedPostage={selectedPostage}
-          heroImg={ItemDetails.heroImg}
-          price={price}
-        />
-      )}
     </div>
   );
 };

@@ -13,7 +13,7 @@ function ProductPagination({total,setPage,page}) {
           hideOnSinglePage
           current={page}
           onChange={(e)=>setPage(e)}
-          pageSize={9}
+          pageSize={1}
     />
     </div>
   )

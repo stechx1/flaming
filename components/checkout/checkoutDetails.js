@@ -8,18 +8,28 @@ import { toast } from "react-toastify";
 
 function CheckoutDetails() {
   const router = useRouter();
-  const { id, token } = router.query;
+  const { id, custome,type } = router.query;
   const [userData, setUserData] = useState(null);
-   console.log("all data ",userData)
+ 
+  const tp = type == 'box' ? 'box' :type == 'sign' ? "sign" : type == 'chopping_serving_board' ? 'chopping_serving_board' : type == 'timber_serving_board'?'timber_serving_board': type == 'olive_wood_heart' ?'olive_wood_heart' :'' 
+  const signAdd = userData?.base_price + userData?.Postage + userData?.sign_edge + userData?.fixing_option + userData?.weather_proof + userData?.image + userData?.Postage
+  const boxAdd = userData?.base_price + userData?.Postage +userData?.compartments+ userData?.image +  userData?.Postage
+  const signContent = userData?.customer?.data?.attributes?.sign_content || userData?.customer_other?.data?.attributes?.sign_content || null
+  const size = userData?.customer?.data?.attributes?.size || userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.initial_size || null
+  const basePrice =userData?.base_price || userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.price
+  const Postage = custome == "true" ?userData?.customer?.data?.attributes?.Postage:userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.Postage
+  const postage_price = custome =="true"? userData?.Postage : userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.postage_price
+  const otherProductTotal = userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.postage_price + userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.price || 0
+   console.log("customer other price details ",otherProductTotal )
   useEffect(() => {
     const abort = new AbortController();
     const signal = abort.signal;
     const fetchUser = async () => {
       try {
-        const response = await axiosInstance.get(`/consumer-responds/${id}`, {
+        const response = await axiosInstance.get(`/consumer-responds/${id}?populate[0]=customer_other.${tp}&populate[1]=customer`, {
           signal,
         });
-        
+        console.log("responsed user ",response.data)
         setUserData(response.data?.data?.attributes);
       } catch (error) {
          if(error?.response?.data){
@@ -56,7 +66,7 @@ console.log("user data ",userData)
                         First Name
                       </label>
                       <div className="mt-1 block w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-teal-500">
-                        {userData?.first_name}
+                        {userData?.customer?.data?.attributes?.first_name || userData?.customer_other?.data?.attributes?.first_name}
                       </div>
                     </div>
                     <div className="relative">
@@ -64,23 +74,23 @@ console.log("user data ",userData)
                         Last Name
                       </label>
                       <div className="block w-full rounded border-gray-300 bg-gray-50 py-3 px-4 pr-10 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-teal-500">
-                        {userData?.last_name}
+                       {userData?.customer?.data?.attributes?.last_name || userData?.customer_other?.data?.attributes?.last_name}
                       </div>
                     </div>
-                    <div>
+                    {signContent && <div>
                       <p className="text-xs font-semibold text-gray-500">
                         Sign Content
                       </p>
                       <div className="block w-full rounded border-gray-300 bg-gray-50 py-3 px-4 pr-10 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-teal-500">
-                        {userData?.sign_content}
+                      {signContent}
                       </div>
-                    </div>
-                    <div className="flex flex-col text-sm ">
+                    </div>}
+                    {size && <div className="flex flex-col text-sm ">
                       <label>Size of Content</label>
                       <div className="mt-1 block w-full rounded border-gray-300 bg-gray-50 py-3 px-4 text-sm placeholder-gray-300 shadow-sm outline-none transition focus:ring-2 focus:ring-teal-500">
-                        {userData?.size}
+                      {size}
                       </div>
-                    </div>
+                    </div>}
                   </form>
                  <div className="hidden lg:flex my-4">
                   <PayPalScriptProvider
@@ -91,7 +101,10 @@ console.log("user data ",userData)
                   intent: "capture",
                    }}
               >
-                <PaypalCheckout userData={userData?.estimated_price} />
+                {custome == 'true' && userData?.type == 'sign' && <PaypalCheckout userData={signAdd} />}
+                {custome == 'true' && userData?.type == 'box' && <PaypalCheckout userData={boxAdd} />}
+                {custome == 'false' &&  <PaypalCheckout userData={otherProductTotal} />}
+
               </PayPalScriptProvider>
               </div>
                 </div>
@@ -103,91 +116,103 @@ console.log("user data ",userData)
                 </div>
                 <div className="relative">
                   <ul className="space-y-5">
-                    <li className="flex justify-between">
+                  <li className="flex justify-between">
                       <div className="inline-flex">
+                        
                         <div className="ml-3">
                           <p className="text-base font-semibold text-white">
-                            selected Image Option
+                            Base Price
                           </p>
                         </div>
                       </div>
                       <p className="text-sm font-semibold text-white">
-                        ${userData?.selectedImageOption || 0}
+                        ${basePrice}
                       </p>
                     </li>
-                    <li className="flex justify-between">
+                   {userData?.image &&  <li className="flex justify-between">
                       <div className="inline-flex">
+                        
                         <div className="ml-3">
                           <p className="text-base font-semibold text-white">
-                            selected Hanging
+                            Image
                           </p>
                         </div>
                       </div>
                       <p className="text-sm font-semibold text-white">
-                        ${userData?.selectedHanging || 0}
+                        ${userData?.image || 0}
                       </p>
-                    </li>
-                    <li className="flex justify-between">
+                    </li>}
+                    {userData?.type == 'sign' && <li className="flex justify-between">
                       <div className="inline-flex">
                         <div className="ml-3">
                           <p className="text-base font-semibold text-white">
-                            selected Edging
+                            Fixing Option
                           </p>
                         </div>
                       </div>
                       <p className="text-sm font-semibold text-white">
-                        ${userData?.selectedEdging || 0}
+                        ${userData?.fixing_option || 0}
                       </p>
-                    </li>
-                    <li className="flex justify-between">
+                    </li>}
+                   {userData?.type == 'sign' && <li className="flex justify-between">
                       <div className="inline-flex">
                         <div className="ml-3">
                           <p className="text-base font-semibold text-white">
-                            selected Weather proofing
+                            Sign Edge
                           </p>
                         </div>
                       </div>
                       <p className="text-sm font-semibold text-white">
-                        ${userData?.selectedWeatherproofing || 0}
+                        ${userData?.sign_edge || 0}
                       </p>
-                    </li>
-                    <li className="flex justify-between">
+                    </li>}
+                    {userData?.type == 'sign' && <li className="flex justify-between">
                       <div className="inline-flex">
                         <div className="ml-3">
                           <p className="text-base font-semibold text-white">
-                            Selected Postage
+                            Weather proofing
                           </p>
                         </div>
                       </div>
                       <p className="text-sm font-semibold text-white">
-                        ${userData?.electedPostage || 0}
+                        ${userData?.weather_proof || 0}
                       </p>
-                    </li>
-                    <li className="flex justify-between">
+                    </li>}
+                    {userData?.type == 'box' && userData?.compartments && <li className="flex justify-between">
                       <div className="inline-flex">
                         <div className="ml-3">
-                          <p className="text-xl font-semibold text-slate-100">
-                            original Price
+                          <p className="text-base font-semibold text-white">
+                            Comparments
                           </p>
                         </div>
                       </div>
-                      <p className="text-xl font-semibold text-white">
-                        ${userData?.originalPrice}
+                      <p className="text-sm font-semibold text-white">
+                        ${userData?.compartments || 0}
+                      </p>
+                    </li>}
+                    <li className="flex justify-between">
+                      <div className="inline-flex">
+                        <div className="ml-3">
+                          <p className="text-base font-semibold text-white">
+                            Postage
+                          </p>
+                        </div>
+                      </div>
+                      <p className="text-sm font-semibold text-white">
+                         {Postage} ${postage_price}
                       </p>
                     </li>
+                   
                   </ul>
                   <div className="my-5 h-0.5 w-full bg-white bg-opacity-30"></div>
-                  <div className="space-y-2">
-                    <p className="flex justify-between text-lg font-bold text-white">
-                      <span>Total price:</span>
-                      <span>{userData?.totalPrice}</span>
-                    </p>
-                  </div>
+                      <div className="flex justify-between">
+                          <p className="text-sm font-semibold text-white">Total</p>
+                        { userData?.type == 'sign' && custome == 'true' && <p className="text-sm font-semibold text-white">${signAdd}</p>}
+                        { userData?.type == 'box'  && custome == 'true' &&  <p className="text-sm font-semibold text-white">${boxAdd}</p>}
+                        {custome == 'false' && <p className="text-sm font-semibold text-white">${otherProductTotal}</p>}
+                      </div>
                   <div className="my-5 h-0.5 w-full bg-white bg-opacity-30"></div>
-                  <div className="text-white font-semibold flex justify-between">
-                      <span>Estimated Price <small className="text-[#ffff81]">(amount to pay)</small>:</span>
-                      <span>${userData?.estimated_price}</span>
-                  </div>
+                
                 </div>
                 <div className="relative mt-10 text-white">
                   <h3 className="mb-5 text-lg font-bold">Support</h3>
@@ -209,13 +234,14 @@ console.log("user data ",userData)
             <div className="flex lg:hidden my-5">
               <PayPalScriptProvider
                 options={{
-                  clientId:
-                    "ATF_cy6zZwHn4mHPgBaNcKm3094XLjpIJswgGiUCJeYFhLKSJDBIK_ZqGUhwdkqXeuVROllNGK8cZceM",
+                  
                   currency: "USD",
                   intent: "capture",
                 }}
               >
-                <PaypalCheckout userData={userData?.estimated_price} />
+                {custome == 'true' && userData?.type == 'sign' && <PaypalCheckout userData={signAdd} />}
+                {custome == 'true' && userData?.type == 'box' && <PaypalCheckout userData={boxAdd} />}
+                {custome == 'false' &&  <PaypalCheckout userData={otherProductTotal} />}
               </PayPalScriptProvider>
               </div>
           </div>

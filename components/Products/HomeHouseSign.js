@@ -7,12 +7,10 @@ import useCategoryProducts from '@/hooks/useCategoryProducts'
 import ProductPagination from '../pagination/ProductPagination'
 
 
-const HomeHouseSign = ({signTitle}) => {
-  const [page,setPage] = useState(1)
-  const {products,loading,total} = useCategoryProducts(signTitle,page)
-  console.log("products ",products)
-  console.log("current page number ",page)
-
+const HomeHouseSign = ({signTitle,type,page,setPage}) => {
+  
+  const {products,loading,total} = useCategoryProducts(type,page)
+ 
   if(loading){
 
       return(
@@ -24,15 +22,16 @@ const HomeHouseSign = ({signTitle}) => {
   }
 
   return (
-   <div>
-    <div className='grid min-h-[90vh] md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 gap-x-15'>
+   <div className='min-h-[90vh]'>
+    <div className='grid  md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 gap-x-15'>
         {products?.map((item,index)=>{
             return(
-              <ProductBox key={index} productData={item?.attributes} id={item?.id} signTitle={signTitle} />
+              <ProductBox key={index} productData={item?.attributes} id={item?.id} signTitle={signTitle} type={type} />
             )
         })}
     </div>
-    {<div className='text-end'>
+    {total>8 && <div className='text-center my-8'>
+       
         <ProductPagination total={total} setPage={setPage} page={page} />
       </div>}
     </div>

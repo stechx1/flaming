@@ -3,38 +3,39 @@ import React, { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 
 function useProducts() {
-const [product,setProducts] = useState([])
+const [productData,setProductsData] = useState([])
+const [boxProduct,setBoxProduct] = useState([])
 const [loading,setLoading] = useState(false)
 
+useEffect(()=>{
 
-    useEffect(() => {
-
-        const getProduct =async()=>{
-
-            setLoading(true)
-            try {
+       const getProduct =async()=>{
+                setLoading(true)
+              try {
+              
+                const response = await axiosInstance.get('/categories?populate=*')
                 
-                const response = await axiosInstance.get("/products?populate=*")
-                console.log("product pagination", response.data)
-                if (response.data?.data) {
-                    setProducts(response.data?.data);
-                    
-                  }
-
+                setProductsData(response.data?.data)
+              
             } catch (error) {
-               // toast.error("Something went wrong. Please try again.",{style:{color:'white',backgroundColor:'red'}})
-               console.log("something went wrong")
-            }
-            finally{
-                  setLoading(false)
-            }
-          
-        }
+                       console.log("categories error ",error)    
+              }
+              finally {
+                setLoading(false)
+              } 
+       }
 
-      getProduct()
-        
-}, []);
+       getProduct()
 
+},[])
+
+
+
+
+
+ 
+const product =productData   
+console.log("products ",product)   
       return {product,loading}
 }
 

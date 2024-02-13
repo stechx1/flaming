@@ -5,98 +5,90 @@ import { Button, Input, Modal } from "antd";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 
-function EmailPopUp({ isModalOpen, setIsModalOpen, userData }) {
-  console.log("user data ",userData)
+
+function EmailPopUp({ isModalOpen, setIsModalOpen, userData,isCustome,active }) {
+  console.log("active ",active)
   const [isSending, setIsSending] = useState(false)
-  const [images, setImages] = useState([])
-  const [estimatedPrice,setEstimatedPrice] = useState()
+  const [inputs,setInputs] = useState({
+       sign_edge:null,
+       fixing_option:null,
+       image:null,
+       Postage:null,
+       weather_proof:null,
+       base_price:null,
+       compartments:null
+
+  })
+
 
   const handleCancel = () => {
-    setIsModalOpen(false);
-    setImages([])
-    
+    setIsModalOpen(false); 
   };
-  console.log("estimated price ",estimatedPrice)
-  const handleConfirm = async() => {
+
+  const handleInput =(e,type)=>{
+
+         setInputs({...inputs,[type]:parseInt(e.target.value)})
+  }
+ 
+  const handleConfirm = async(e) => {
+    e.preventDefault()
     const data = new FormData()
     const newData ={
-         email:userData?.email,
-         first_name:userData?.first_name,
-         last_name:userData?.last_name,
-         totalPrice:userData?.totalPrice,
-         user_id:userData?.id,
-         sign_content:userData?.sign_content,
-         budget:userData?.budget,
-         has_pay:false,
-         size:userData?.size,
-         selectedImageOption:userData?.selectedImageOption,
-         selectedHanging:userData?.selectedHanging,
-         selectedWeatherproofing:userData?.selectedWeatherproofing,
-         selectedEdging:userData?.selectedEdging,
-         electedPostage:userData?.electedPostage,
-         originalPrice:userData?.originalPrice,
-         verificationToken:generateRandomToken(),
-         estimated_price:estimatedPrice
-
+         ...inputs,
+         customer:userData?.id,
+         type:userData?.type  
     }
-    data.append("data", JSON.stringify(newData));
 
-    for (const file of images) {
-      data.append('files.images', file,);
+    const otherData = {
+          customer_other:userData?.id,
+          type:active
     }
+   const dataToSend = (userData?.type == 'sign' || userData?.type == 'box') ? newData :otherData
     let id
     try {
       setIsSending(true)
-       const createConsumer = await axiosInstance.post('/consumer-responds?populate=*',data)
+       const createConsumer = await axiosInstance.post(`/consumer-responds?populate[0]=customer&populate[1]=image&populate[2]=customer_other.${active}`,{data:dataToSend})
        console.log("create customer response => ",createConsumer)
        id = createConsumer.data?.data?.id
       if(createConsumer.data?.data?.attributes){
         const getData = createConsumer.data?.data?.attributes
         const emailData ={
               
-               first_name:getData?.first_name,
-               last_name:getData?.last_name,
-               sign_content:getData?.sign_content,
-               pay:getData?.totalPrice,
-               budget:getData?.budget,
-               email:getData?.email,
-               imagesArr:getData?.images?.data?.map(item=>{return item?.attributes?.url}),
-               size:getData?.size,
-               custId:id,
-               token:getData?.verificationToken,
-               estimated_price:getData?.estimated_price
+               first_name:getData?.customer?.data?.attributes?.first_name || getData?.customer_other?.data?.attributes?.first_name,
+               last_name:getData?.customer?.data?.attributes?.last_name || getData?.customer_other?.data?.attributes?.last_name,
+               sign_content:getData?.customer?.data?.attributes?.sign_content,
+               base_price:getData?.base_price || getData?.customer_other?.data?.attributes?.[active]?.data?.attributes?.price,
+               sign_edge:getData?.sign_edge,
+               fixing_option:getData?.fixing_option,
+               Postage:getData?.customer?.data?.attributes?.Postage || getData?.customer_other?.data?.attributes?.[active]?.data?.attributes?.Postage,
+               postage_price:getData?.Postage || getData?.customer_other?.data?.attributes?.[active]?.data?.attributes?.postage_price,
+               image:getData?.image,
+               weather_proof:getData?.weather_proof,
+               compartments_price:getData?.compartments,
+               compartments: getData?.customer_other?.data?.attributes?.[active]?.data?.attributes?.compartments || '',
+               type:getData?.type || active,
+               custId:id
+              
         }
 
-        console.log(" email data ==> ",emailData)
-        const response = await axiosInstance.post("/user/admin/email",{...emailData,to:userData?.email,from:'husain.saqib31@gmail.com'})
-         toast.success("Email has been sent to customer successfully",{style:{color:'white',backgroundColor:'green'}})
+        console.log("email data ",emailData)
+
+       const toEmail = userData?.email || getData?.customer_other?.data?.attributes?.email
+      const response = await axiosInstance.post("/user/admin/email",{...emailData,to:toEmail,from:'husain.saqib31@gmail.com',isCustome:isCustome,active:active})
+       toast.success("Email has been sent to customer successfully",{style:{color:'white',backgroundColor:'green'}})
       }
      
     setIsModalOpen(false);
-    setImages([])
+   
     } catch (error) {
-          alert("some thing went wrong")
+          console.log("some thing went wrong",error)
      }
      finally{
         setIsSending(false)
         }
 };
 
-
-const handleImge =(e)=>{
- 
-     const arrOfImage = Array.from(e.target.files)
-     console.log("arrofImage ",arrOfImage.length)
-     if(arrOfImage.length >3){
-            toast.error('You can upload maximum three photos',{style:{color:'white',backgroundColor:'red'}})
-     }
-     else{
-     setImages(arrOfImage)
-     }
-}
-
-
-console.log("array of object ",images)
+console.log("inputs ",inputs)
   return (
     <div className="max-w-2xl" >
       <Modal
@@ -104,73 +96,66 @@ console.log("array of object ",images)
         open={isModalOpen}
         onOk={handleConfirm}
         onCancel={handleCancel}
-        okButtonProps={{ style: { backgroundColor: "#003933",color:'white'},disabled:(images.length == 0 || !estimatedPrice || estimatedPrice <= 0 )? true:false }}
+        cancelButtonProps={{style:{display:'none'}}}
+        okButtonProps={{ style: { display:'none'}}}
         okText={<span className="text-white">{isSending?'Sending...' : 'Send Email'}</span>}
-        width={550}
+        width={450}
         
       >
         <div className="grid grid-cols-1 gap-y-2  gap-x-2  w-full">
-               <div className="flex flex-col gap-y-2">
-               <div className="flex flex-col gap-y-2">
-                    <label>Estimated Price</label>
-                    <Input  type={'number'} value={estimatedPrice} onChange={(e)=>setEstimatedPrice(e.target.value)} min={0}/>
-                  </div>
-                <div className="flex items-center gap-x-2"><h3>Pictures</h3><small>(Maximum 3 pictures)</small></div>
-               <label  htmlFor="image" className="w-[100%] h-60 flex item-center justify-center border-2 border-dashed rounded-md">
-                       
-                       <div className="h-full flex flex-col items-center justify-center">
-                       <ArrowUpTrayIcon width={50}/>
-                       <p>Upload</p>
-                        </div>
-                 </label>
-                  
-               </div>
-                <div className="mt-4 md:mt-0 min-w-fit hidden">
-                 <div className="flex justify-between border-b-[1px] py-1">
-                     <span className="font-medium">Full Name :</span>
-                     <span>{userData?.first_name} - {userData?.last_name}</span>
-                 </div>
-                 <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
-                     <span className="font-medium">Email:</span>
-                     <span>{userData?.email}</span>
-                 </div>
-                 <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
-                     <span className="font-medium">Phone:</span>
-                     <span>{userData?.phone}</span>
-                 </div>
-                 <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
-                     <span className="font-medium">Total Price:</span>
-                     <span>${userData?.totalPrice}</span>
-                 </div>
-                 <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
-                     <span className="font-medium">Customer Budget:</span>
-                     <span>${userData?.budget}</span>
-                 </div>
-                 <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
-                     <span className="font-medium">Size :</span>
-                     <span>{userData?.size}</span>
-                 </div>
-                 <div className="flex gap-x-5 justify-between border-b-[1px] py-1">
-                     <span className="font-medium">Sign Content</span>
-                     <span>{userData?.sign_content}</span>
-                 </div>
-                
-                 </div> 
-                 
-                 <input type="file" id="image" className="hidden" multiple accept="image/*" onChange={(e)=>handleImge(e)} />
+               <form className="flex flex-col gap-y-2" onSubmit={handleConfirm}>
+              
+                {isCustome && <div>
+                  <label>Base Price</label>
+                  <Input required type="number" value={inputs.base_price} onChange={(e)=>handleInput(e,"base_price")}/>
+                </div>}
+                {userData?.type == 'sign' && isCustome &&<div>
+                  <label>Sign Edge</label>
+                  <Input required type="number" value={inputs.sign_edge} onChange={(e)=>handleInput(e,"sign_edge")}/>
+                </div>}
+                {userData?.type == 'sign' && isCustome && <div>
+                  <label>Weather Proof</label>
+                  <Input required type="number" value={inputs.weather_proof} onChange={(e)=>handleInput(e,"weather_proof")}/>
+                </div>}
+               {userData?.type == 'sign' && isCustome && <div>
+                  <label>Fixing Option</label>
+                  <Input required type="number" value={inputs.fixing_option} onChange={(e)=>handleInput(e,"fixing_option")}/>
+                </div>}
+                {(userData?.type == 'box' && isCustome && userData?.compartments !=0) && <div>
+                  <label>Comparments</label>
+                  <Input required type="number" value={inputs.compartments} onChange={(e)=>handleInput(e,"compartments")}/>
+                </div>}
+
+                {isCustome && <div>
+                  <label>Image</label>
+                  <Input type="number" value={inputs.image} onChange={(e)=>handleInput(e,"image")}/>
+                </div>}
+                { isCustome && <div>
+                  <label>Postage</label>
+                  <Input type="number" value={inputs.Postage} onChange={(e)=>handleInput(e,"Postage")}/>
+                </div>}
+                {!isCustome && <div className="flex flex-col gap-y-1">
+                             <div className="flex flex-col p-1 border rounded-md gap-y-1">
+                                 <label>Full Name</label>
+                                 <p ><span>{userData?.attributes?.first_name} </span> <span> {userData?.attributes?.last_name}</span></p>
+                             </div>
+                             <div className="flex flex-col p-1 border rounded-md gap-y-1">
+                                 <label>Email</label>
+                                 <p ><span>{userData?.attributes?.email} </span></p>
+                             </div>
+                             <div className="flex flex-col p-1 border rounded-md gap-y-1">
+                                 <label>sign Content</label>
+                                 <p ><span>{userData?.attributes?.sign_content} </span></p>
+                             </div>
+                             <div className="flex flex-col p-1 border rounded-md gap-y-1">
+                                 <label>Type</label>
+                                 <p ><span className="capitalize"> {active}</span></p>
+                             </div>
+                    </div>}
+                <div className="text-end"><button type="submit" className="bg-[#003933] py-2 px-3 border-0 w-full rounded text-white">Send</button></div> 
+               </form>  
         </div>
-        {images.length >0  &&
-                  <div className="flex flex-col mt-2 border-b-[1px] py-1">
-                       <span className="font-medium">Uploaded Images</span>
-                       <div className="flex flex-col gap-y-1 w-full">
-                            {images.map((item,index)=>(
-                                 <div className="flex w-full border-[1px] border-slate-200 py-1 px-2" key={index}>
-                                     <img src={URL.createObjectURL(item)} className="w-9 h-9 rounded"/>
-                                 </div>
-                            ))}
-                       </div>
-                  </div>
-                  }
+        
       </Modal>
     </div>
   );

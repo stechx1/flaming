@@ -13,7 +13,7 @@ function useGallery(page) {
              const response = await axiosInstance.get(`/galleries?pagination[page]=${page}&pagination[pageSize]=30&populate=*`)
              if(response.data?.data){
                 setGallery(response.data?.data)
-                console.log("gallery data ",response.data)
+                
                 setTotal(response.data?.meta?.pagination?.total)
              }
              
