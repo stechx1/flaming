@@ -5,10 +5,26 @@ import { axiosInstance } from "@/axios/axios";
 import useProducts from "@/hooks/useProducts";
 import ProdcutLoading from "../skeleton/ProdcutLoading";
 import NotFound from "../NotFound/NotFound";
+import { Modal } from "antd";
+import { baseImgUri } from "@/constants/baseImgUri";
 
 const Featured = () => {
   const router = useRouter();
   const { product, loading } = useProducts();
+  const [readMore,SetReadMore] = useState(null)
+  const [open, setOpen] = useState(true)
+
+  const handleClose =()=>{
+
+        setOpen(false)
+        SetReadMore(null)
+  }
+  const handleReadMore = (item)=>{
+
+       SetReadMore(item)
+        console.log("itemv==> ",item)
+  }
+  
 
   if (loading) {
     return (
@@ -45,12 +61,12 @@ const Featured = () => {
         </span>
       </div>}
       <div className="bg-[#f0eeef] py-5 flex justify-center">
-        <div class=" sm:max-w-[1400px] mx-auto ">
-          <div className="w-full grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 gap-x-15">
-            {product?.slice?.(0,6).map((item, index) => {
+        <div class=" sm:max-w-[1400px] mx-auto w-[100%] ">
+          <div className="w-full grid lg:grid-cols-3 mx-1 sm:mx-2 sm:grid-cols-2 grid-cols-1 gap-10 gap-x-15">
+            {product?.map((item, index) => {
               return (
                 <div key={index}>
-                  <FeaturedBox productDetails={item?.attributes} id={item.id}/>
+                  <FeaturedBox productDetails={item?.attributes} id={item?.id} readMore={readMore} handleReadMore={()=>handleReadMore(item?.attributes)}/>
                 </div>
               );
             })}
@@ -65,6 +81,19 @@ const Featured = () => {
           See all Products
         </button>
       </div>
+     {readMore && 
+       <Modal open={true} title={readMore?.Title} okButtonProps={{style:{display:'none'}}} onCancel={handleClose} cancelButtonProps={{style:{backgroundColor:'red',color:"white"}}} >
+               
+                <div>
+                    <div className="flex justify-center">
+                      <img src={`${baseImgUri}${readMore?.image?.data?.attributes?.url}`} className="w-[100%]"/>
+                    </div>
+                    <div >
+                         {readMore?.description}
+                    </div>
+                </div>
+              
+      </Modal>}
     </div>
   );
 };
