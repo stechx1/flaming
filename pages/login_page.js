@@ -21,13 +21,9 @@ function LoginPage() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const data = new FormData();
-    data.append('data', JSON.stringify());
+    
     try {
-      const response = await axiosInstance.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/local`,
-        { identifier: inputs.identifier, password: inputs.password }
-      );
+      const response = await axiosInstance.post(`/auth/local`,{identifier: inputs.identifier, password: inputs.password});
       console.log('auth response ', response.data);
       router.push('/');
       localStorage.setItem('token', response.data?.jwt);

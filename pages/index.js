@@ -7,10 +7,13 @@ import HomeAbout from '@/components/about/HomeAbout'
 import CreativeCustomSigns from '@/components/CreativeCustomSigns/CreativeCustomSigns'
 import BuyersGuide from '@/components/BuyersGuide/BuyersGuide'
 import Testimonials from '@/components/Testimonials/Testimonials'
+import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+
+  const router = useRouter()
   return (
     <>
       <Hero />
@@ -27,8 +30,8 @@ export default function Home() {
           <div className='flex gap-4 mt-5'>
 
 
-            <button className='text-white bg-[#003933] px-3 py-2 rounded'>Design your custom box</button>
-            <button className='text-white bg-[#FE5B26] px-3 py-2 rounded'>Design your custom sign</button>
+            <button onClick={() => router.push({ pathname: "/custome-box" })}  className='text-white bg-[#003933] px-3 py-2 rounded'>Design your custom box</button>
+            <button onClick={() => router.push({ pathname: "/detail_custom_form" })} className='text-white bg-[#FE5B26] px-3 py-2 rounded'>Design your custom sign</button>
 
           </div>
 

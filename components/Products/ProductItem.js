@@ -173,12 +173,12 @@ const ProductItem = () => {
             
           )}
           {item == "Custom Wood Boxes" && (
-            <div>
-              <p className="text-lg text-center">
+            <div className="text-center flex flex-col justify-center items-center gap-y-4">
+              <p className="text-lg text-center w-[100%] sm:w-[70%]">
                Click on the button below and fill out the form with details of your Box. I will send back a design draft and quote for your consideration.
                </p>
             <button
-              onClick={() => router.push({ pathname: "custome-box" })}
+              onClick={() => router.push({ pathname: "/custome-box" })}
               className="bg-[#003933] text-white py-2 px-2 rounded  text-xl md:text-xl"
             >
               Design Your Own Box
