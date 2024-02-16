@@ -26,7 +26,7 @@ function useSignPricing() {
 
          },[])
 
-    return {product}
+    return {product:product}
 }
 
 export default useSignPricing
