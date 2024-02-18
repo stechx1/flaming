@@ -75,7 +75,7 @@ function EmailPopUp({ isModalOpen, setIsModalOpen, userData,isCustome,active }) 
 
        const toEmail = userData?.email || getData?.customer_other?.data?.attributes?.email
       const response = await axiosInstance.post("/user/admin/email",{...emailData,to:toEmail,from:'husain.saqib31@gmail.com',isCustome:isCustome,active:active})
-       toast.success("Email has been sent to customer successfully",{style:{color:'white',backgroundColor:'green'}})
+      toast.success("Email has been sent to customer successfully",{style:{color:'white',backgroundColor:'green'}})
       }
      
     setIsModalOpen(false);

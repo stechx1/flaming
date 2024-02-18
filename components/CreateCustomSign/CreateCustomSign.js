@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
 import {axiosInstance} from '@/axios/axios'
+import { toast } from 'react-toastify';
+import SuccessModal from './SuccessModal';
+import CheckoutSuccess from '../checkout/CheckoutSuccess';
 
 
 
@@ -28,6 +31,7 @@ const CreateCustomSign = () => {
   });
   const [image,setImage] = useState()
   const [loading,setLoading] = useState(false)
+  const [open, setOpen] = useState(false)
 
   const handleImage =(e)=>{
 
@@ -51,6 +55,8 @@ const CreateCustomSign = () => {
                 console.log("custome response ",response.data?.data?.attributes)
                 const emailResponse = await  axiosInstance.post('/user/client/email',{product:response.data?.data?.attributes,to:'abc@gmail.com',from:data?.email})
                 console.log("email response ",emailResponse.data)
+                setOpen(true)
+                
             } catch (error) {
                   console.log("custome sign error ",error)
             }
@@ -149,7 +155,7 @@ const CreateCustomSign = () => {
                      <select {...register('Postage')} className='h-10 rounded border border-slate-400'>
                           <option selected disabled value={''}>Choose an option</option>
                           <option value={'Aus Post Postage: Free Austrilia wide'}>Aus Post Postage: Free Austrilia wide</option>
-                          <option value={'Aus Post Express $15 -  $25'}>Aus Post Express $15 -  $25</option>
+                          <option value={'Aus Post Express'}>Aus Post Express $15 -  $25</option>
                          
                      </select>
                      {errors.Postage && <small className='text-red-600'>{errors.Postageostage.message}</small>}
@@ -174,7 +180,7 @@ const CreateCustomSign = () => {
               
         </div>
 
-
+           {open && <CheckoutSuccess isModalOpen={open} handleOk={()=>setOpen(false)} />}
       </div>
     </div>
 

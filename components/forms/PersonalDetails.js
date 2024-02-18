@@ -7,10 +7,13 @@ import { useRouter } from 'next/router';
 import useProductById from '@/hooks/useProductById';
 import { baseImgUri } from '@/constants/baseImgUri';
 import { axiosInstance } from '@/axios/axios';
+import { toast } from 'react-toastify';
+import CheckoutSuccess from '../checkout/CheckoutSuccess';
 
 function PersonalForm() {
 
   const [loading, setLoading] = useState(false)
+  const [open,setOpen] = useState(false)
   const router = useRouter()
   const itemId = router.query.itemId
  
@@ -23,7 +26,7 @@ function PersonalForm() {
         last_name: yup.string().required('last name is required'),
         email: yup.string().email('Invalid email address').required('Email is required'),
         phone:yup.number().required(),
-        sign_content:yup.string().required("Sign content is required")
+        sign_content:yup.string()
       });
 
       const {register,handleSubmit,formState:{errors},reset} = useForm({resolver:yupResolver(schema)})
@@ -55,7 +58,7 @@ try {
   const consumerRespond = await axiosInstance.post(`/customers?populate[0]=${typeOfCategory}.heroImg&populate[1]=${typeOfCategory}.categories_data`,{data:myData});
   console.log("consumer respond ",consumerRespond.data)
  const response = await axiosInstance.post('/user/email',{product :consumerRespond?.data?.data?.attributes,isCustome:consumerRespond?.data?.attributes?.isCustome,first_name:data.first_name,last_name:data?.last_name,sign_content:data?.sign_content,phone:data?.phone,to:'husain.saqib@gmail.com',from:'abc@gmail.com'})
- console.log("email response => ",response.data)
+ setOpen(true)
  }
 
 } catch (error) {
@@ -77,7 +80,7 @@ finally{
                  <Inputs label={"Last Name"} name={"last_name"} events={register} errors={errors} type={'text'} />
                  <Inputs label={"Email"} name={"email"} events={register} errors={errors} type={'text'} />
                  <Inputs label={"Phone No"} name={"phone"} events={register} errors={errors} type={'number'} />
-                <div className='flex-1'> <Inputs label={"Sign Content"} name={"sign_content"} events={register} errors={errors} type={'text'} /> </div>       
+              {(typeOfCategory == 'box' || typeOfCategory == 'sign') &&  <div className='flex-1'> <Inputs label={"Sign Content"} name={"sign_content"} events={register} errors={errors} type={'text'} /> </div>       }
          </div>
            <button disabled={loading} type='submit' className='bg-[#003933] text-white p-2 rounded my-2'>{loading?"Sending...":'Send'}</button>
         </form>
@@ -98,7 +101,7 @@ finally{
        </div>
          </div>
        </div>
-                 
+             {open && <CheckoutSuccess isModalOpen={open} handleOk={()=>setOpen(false)} />}    
     </div>
   )
 }

@@ -15,17 +15,16 @@ function CustomerTable({ token }) {
   const [input, setInput] = useState("");
   const [pageNum, setPageNum] = useState(1);
   const [search, setSearch] = useState("");
+  const [searchInput,setSearchInput] = useState("")
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [viewModal, setViewModal] = useState(false);
   const [userData, setUserData] = useState(null);
   const [details, setDetails] = useState(null);
   const [page, setPage] = useState(1);
   const { customerData, total } = useFetchCustomer(pageNum, search, token);
-
   const [activeTab, setActiveTab] = useState(1);
-  const {data} = useFetchCategoryCustomer(activeTab);
-  console.log("ddaaatttaa ",data)
-
+  const {data} = useFetchCategoryCustomer(activeTab,searchInput);
+ 
   const handleInput = (e) => {
     setInput(e.target.value);
   };
@@ -33,6 +32,19 @@ function CustomerTable({ token }) {
     e.preventDefault();
     setSearch(input);
   };
+  const handleSearchAll = (e) => {
+    e.preventDefault();
+    setSearchInput(input);
+ 
+  };
+
+ const handleTab =(current)=>{
+
+      setActiveTab(current)
+      setInput("")
+      setSearch("")
+      setSearchInput("")
+ }
 
   const handlePopUp = (data) => {
     setIsModalOpen(true);
@@ -50,7 +62,7 @@ function CustomerTable({ token }) {
       <div className="flex flex-col  min-h-screen  max-w-7xl mx-auto mt-5">
         <div className="flex justify-between gap-x-2">
           <div
-            onClick={() => setActiveTab(1)}
+            onClick={() => handleTab(1)}
             className={`whitespace-nowrap w-full text-center cursor-pointer border-[1px] p-2 rounded border-blue-100 ${
               activeTab == 1 ? "bg-green-500 text-white" : "bg-white"
             }`}
@@ -58,7 +70,7 @@ function CustomerTable({ token }) {
             Custom Sign/Box
           </div>
           <div
-            onClick={() => setActiveTab(2)}
+            onClick={() => handleTab(2)}
             className={`whitespace-nowrap w-full text-center cursor-pointer border-[1px] p-2 rounded border-blue-100 ${
               activeTab == 2 ? "bg-green-500 text-white" : "bg-white"
             }`}
@@ -66,7 +78,7 @@ function CustomerTable({ token }) {
             Sign{" "}
           </div>
           <div
-            onClick={() => setActiveTab(3)}
+            onClick={() => handleTab(3)}
             className={`whitespace-nowrap w-full text-center cursor-pointer border-[1px] p-2 rounded border-blue-100 ${
               activeTab == 3 ? "bg-green-500 text-white" : "bg-white"
             }`}
@@ -74,7 +86,7 @@ function CustomerTable({ token }) {
             Box
           </div>
           <div
-            onClick={() => setActiveTab(4)}
+            onClick={() => handleTab(4)}
             className={`whitespace-nowrap w-full text-center cursor-pointer border-[1px] p-2 rounded border-blue-100 ${
               activeTab == 4 ? "bg-green-500 text-white" : "bg-white"
             }`}
@@ -82,7 +94,7 @@ function CustomerTable({ token }) {
             Chopping Board
           </div>
           <div
-            onClick={() => setActiveTab(5)}
+            onClick={() => handleTab(5)}
             className={`whitespace-nowrap w-full text-center cursor-pointer border-[1px] p-2 rounded border-blue-100 ${
               activeTab == 5 ? "bg-green-500 text-white" : "bg-white"
             }`}
@@ -98,7 +110,7 @@ function CustomerTable({ token }) {
             Wooden Heart
           </div>
         </div>
-        <form onSubmit={handleSearch} className="flex w-full justify-end my-1">
+        {activeTab == 1 && <form onSubmit={handleSearch} className="flex w-full justify-end my-1">
           <div className="max-w-sm w-full flex mx-1 ">
             <Search
               onChange={(e) => handleInput(e)}
@@ -118,7 +130,7 @@ function CustomerTable({ token }) {
               size="middle"
             />
           </div>
-        </form>
+        </form>}
         {activeTab == 1 && <Table
           dataSource={customerData}
           className="w-full bg-slate-50 overflow-x-auto"
@@ -195,11 +207,32 @@ function CustomerTable({ token }) {
             )}
           />
         </Table>}
-         {activeTab == 2 && <CustomerProductTable data={data} active={'sign'} /> }
-         {activeTab == 3 && <CustomerProductTable data={data} active={'box'} /> }
-         {activeTab == 4 && <CustomerProductTable data={data} active={'chopping_serving_board'} /> }
-         {activeTab == 5 && <CustomerProductTable data={data} active={'timber_serving_board'} /> }
-         {activeTab == 6 && <CustomerProductTable data={data} active={'olive_wood_heart'} /> }
+        { activeTab != 1 && <form onSubmit={handleSearchAll} className="flex w-full justify-end my-1">
+          <div className="max-w-sm w-full flex mx-1 ">
+            <Search
+              onChange={(e) => handleInput(e)}
+              className="outline-offset-0"
+              placeholder="search..."
+              enterButton={
+                <button
+                  style={{
+                    backgroundColor: "#003933",
+                    color: "white",
+                    padding: "8px 10px",
+                  }}
+                >
+                  Search
+                </button>
+              }
+              size="middle"
+            />
+          </div>
+        </form>}
+         {activeTab == 2 && <CustomerProductTable data={data} active={'sign'}  /> }
+         {activeTab == 3 && <CustomerProductTable data={data} active={'box'}  /> }
+         {activeTab == 4 && <CustomerProductTable data={data} active={'chopping_serving_board'}  /> }
+         {activeTab == 5 && <CustomerProductTable data={data} active={'timber_serving_board'}  /> }
+         {activeTab == 6 && <CustomerProductTable data={data} active={'olive_wood_heart'}  /> }
         {total > 12 && search == "" && (
           <div className="my-2 mx-3 flex items-end justify-end">
             <ProductPagination
