@@ -30,16 +30,18 @@ function useFetchCustomer(pageNum, searchTerm, token) {
              
               budget: item?.attributes?.budget,
               phone: item?.attributes?.phone,
-              sign_edge: item?.attributes?.sign_edge || "-",
-              fixing_option: item?.attributes?.fixing_option || "-",
-              indoor_outdoor:item?.attributes?.selectedWeatherproofing || "-",
+              sign_edge: item?.attributes?.sign_edge ,
+              fixing_option: item?.attributes?.fixing_option ,
+              indoor_outdoor:item?.attributes?.selectedWeatherproofing ,
               sign_content: item?.attributes?.sign_content,
               size: item?.attributes?.size,
               price: item?.attributes?.price,
-              image:item?.attributes?.image?.data?.attributes?.url || '',
+              image:item?.attributes?.image?.data?.attributes?.url ,
               compartments:item?.attributes?.compartments,
               Postage:item?.attributes?.Postage,
-              type:item?.attributes?.type
+              type:item?.attributes?.type,
+              extra_comment:item?.attributes?.extra_comment,
+              timber_specie:item?.attributes?.timber_specie
             };
 
             return data;

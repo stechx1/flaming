@@ -28,6 +28,7 @@ const CreateCustomSign = () => {
     post_code:yup.string().required("Post code is required"),
     font:yup.string().required("font is required"),
     size:yup.string().required("Size is required"),
+    extra_comment:yup.string()
   });
   const [image,setImage] = useState()
   const [loading,setLoading] = useState(false)
@@ -41,8 +42,8 @@ const CreateCustomSign = () => {
   const {register,handleSubmit,formState:{errors},reset} = useForm({resolver:yupResolver(schema)})
 
   const handleSubmitData =async(data)=>{
-     
-      setLoading(true)
+     console.log("data ",data)
+    //  setLoading(true)
       const formData = new FormData()
       const type = "sign"
       const combineData = {...data,type}
@@ -82,8 +83,11 @@ const CreateCustomSign = () => {
         <div className=' flex flex-col'>
           <span className='text-[#003933] sm:text-[40px] text-[30px] text-center font-[600]'>Create your custom signs</span>
           <div className='flex flex-col gap-y-5 text-center text-[18px]'>
-              <p>You can also use your own font. Just send link of the font or let us know the name of font</p>
-              <p><a className='p-2 m-2 bg-[#FE7446] text-white rounded' href='https://mystrapi.s3.eu-north-1.amazonaws.com/Flamin%20Signs%20and%20Boxes%202019%20-%20Custom%20Fonts.pdf?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEM3%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmFwLXNvdXRoLTEiRzBFAiAc7%2F1kw%2F%2FJBgSBKkViZI0BT3Wjgi1AXXPKeVqvXwbyHQIhAN5riCnsjGbIE7pzibdphG4UTeiuZFeWaKVap%2BnUnm67KoYDCKb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMOTc1MDUwMzY5MzA2Igzu8IWN%2BBJmLowbZU0q2gJYi7WVJhFpy1Lx6keTL4IQh0el%2B1l%2BmE1HiIKFdtcqDwtAoyZpdpdT3Wd6ROcPvGKbpqoElTwBLgqJT840TleGG1mtSg4aJIpUHlEq%2BKROLoj0wW%2BV9eqa6nSq3MfGcEnUfWUPR%2BbDsxteUljNeHcBVeV53QNWTuGv0wnRrrgRb0u87NXHAspTrdhD1AxwkOB47Us007rINNlEvmQvq4vmY%2F31Dx38bFra%2BS8MVj52J9jh320EKa2CPwURyNawPFe3WSIhNB9FUoyZlfv66LpgAL2etKKiQUETrzeeQUIPCoDSD0GLs7mXhmMELj2EWWtzuNlBSe9s8xVK6P8fKq1mHXVggwwjGwQxTk5CPt5s0AE5iPB0E%2BrNC4F1KSn%2BxVI%2B4hUCvK6qTCsEBCQ7d43MZMScwOIE3o%2BKmzxt81ilqn13eoLwRFiH7JrVBnSNppb4968FZDvFVeIAMNOYuK4GOrMCoWB%2BSE5OBPUtjYUR2D1L970q79UuHoAacVwkIOMHhiJeNbM1P0XiFE9nQPQoFiWJGzdxK0icLXUmnqt5e3aKVsYkNNWfUNZVjMXPKjysKjmpZgGZRTtbQ8zsbfk5rl4mTtZNF6ljRgFnAZ%2FuN9hryvrnl6pc3tQN3eH3qXLxsYfTJxQZkLppivMyuSkwHZvg2opy31HJE2FyCaghOimmOMTyJhlTYtR1wljGxJv9plhwwCIb2Mw14LSXnGMBVhTYEeJqcrlI%2BEoinI04J9%2FTFWSAarBSXzTiy4S0ZybePAGIQJpmWlT2nLkqMjbZlYcFLu%2B%2BHGxolt3MFs7zHZbIHIvaDkp4HFKzKwbPjF2QApA%2FBK6yPKqBcfUy1t37reW8DInuTHTwExfdqwRQebouvhyieg%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240215T140613Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA6GBMH5ENJT63NALR%2F20240215%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Signature=00411d8ed43ff93d05678fa73991d2df5203316e860c9564e1b57810435b93d6'>Click here to view the fonts style </a> </p>
+              <div className='flex flex-col gap-y-2 my-3'>
+                <span className='text-xl font-bold'>Click on the button to view the fonts.</span>
+                <span>You can also use your own font. Just send link of the font or let us know the name of font</span>
+              </div>
+              <p><a className='p-2 m-2 bg-[#FE7446] text-white rounded' href='https://mystrapi.s3.eu-north-1.amazonaws.com/fonts.pdf'>Click here to view the fonts style </a> </p>
            </div>
 
           <form onSubmit={handleSubmit(handleSubmitData)}  className='flex flex-col gap-3 max-w-screen-2xl my-10 justify-between px-5'>
@@ -165,14 +169,25 @@ const CreateCustomSign = () => {
                    
                     <div className='mt-2 flex items-center w-full gap-x-2'>
                          <SignInput label={"Post Code"} name={'post_code'} events={register} type={'text'} errors={errors} />
-                        <div className='flex flex-col w-full'>
-                          <label>Upload an Image</label>
-                        <label htmlFor='image' className=' bg-white border rounded p-1 cursor-pointer  border-slate-400'>Upload <span className='text-2xl'>+</span></label>
+                        
+                    </div> 
+                    <div>
+                       <div className='flex flex-col gap-y-3 '>
+                       <div className='flex flex-col w-full flex-1'>
+                          <label>Upload an Image.</label>
+                        <label htmlFor='image' className=' bg-white border border-dashed h-14 rounded p-1 cursor-pointer  border-slate-400'>Click here to upload<span className='text-2xl'>+</span></label>
                         <input type='file' className='hidden' id='image' onChange={(e)=>handleImage(e)} />
                         </div>
-                        
-                    </div>   
-                    {image && <img src={URL.createObjectURL(image)} className='max-w-[400px] w-[100%] h-[200px] rounded-md' />}
+                        <div className='flex-1'>
+                        {image && <img src={URL.createObjectURL(image)} className='w-[200px]  rounded-md' />}
+                        </div>
+                       </div>
+                    </div>  
+                
+                    <div className='flex flex-col my-3 gap-3'>
+                         <label>EXTRA COMMENTS - IMAGE SUGGESTIONS - OPTIONAL FREE SHORT PERSONAL MESSAGE ENGRAVED ON BACK OF SIGN - LET US KNOW THE MESSAGE HERE. Extra $ for longer messages</label>
+                         <textarea rows={6} {...register('extra_comment')} name='extra_comment'></textarea>
+                    </div>
                    <button disabled={loading} type='submit' className=' bg-green-400 text-white p-3 my-2' >{loading ? "Sending..." : "Send Request"}</button>
 
                    
@@ -194,7 +209,7 @@ const SignInput =({label,events,name,errors,type})=>{
               return (
                      
                 <div className='flex flex-col gap-y-1 w-full relative'>
-                <label>{label}</label>
+                <label><span>{label}</span> </label>
                 <input  {...events(name) } type={type} className={`border rounded p-1 h-10 border-slate-400`} />
                 {errors[name]?<small className='absolute -bottom-4' style={{color:"red"}}>{errors[name].message}</small>:null}
                 </div>

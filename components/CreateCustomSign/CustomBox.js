@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup'
 import { axiosInstance } from '@/axios/axios';
+import CheckoutSuccess from '../checkout/CheckoutSuccess';
 
 const CustomBox = () => {
   const schema = yup.object().shape({
@@ -18,10 +19,12 @@ const CustomBox = () => {
     post_code:yup.string().required("Post code is required"),
     font:yup.string().required("font is required"),
     size:yup.string().required("Size is required"),
-    compartments:yup.number().required("field is required")
+    compartments:yup.number().required("field is required"),
+    extra_comment:yup.string()
   });
   const [image,setImage] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [open,setOpen] = useState(false)
   const {register,handleSubmit,formState:{errors},reset} = useForm({resolver:yupResolver(schema)})
 
   const handleSubmitData =async(data)=>{
@@ -38,6 +41,7 @@ const CustomBox = () => {
                   console.log("Box response.data ",response.data)
                    const emailResponse = await  axiosInstance.post('/user/client/email',{product:response.data?.data?.attributes,to:'abc@gmail.com',from:'xyz@gmail.com'})
                 console.log("email response ",emailResponse.data)
+                setOpen(true)
              } catch (error) {
                     console.log("box error ",error)
              }
@@ -68,7 +72,7 @@ const CustomBox = () => {
         
            <div className='flex flex-col gap-y-5 text-center text-[18px]'>
               <p>You can also use your own font. Just send link of the font or let us know the name of font</p>
-              <p><a className='p-2 m-2 bg-[#FE7446] text-white rounded' href='https://mystrapi.s3.eu-north-1.amazonaws.com/Flamin%20Signs%20and%20Boxes%202019%20-%20Custom%20Fonts.pdf?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEM3%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmFwLXNvdXRoLTEiRzBFAiAc7%2F1kw%2F%2FJBgSBKkViZI0BT3Wjgi1AXXPKeVqvXwbyHQIhAN5riCnsjGbIE7pzibdphG4UTeiuZFeWaKVap%2BnUnm67KoYDCKb%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEQABoMOTc1MDUwMzY5MzA2Igzu8IWN%2BBJmLowbZU0q2gJYi7WVJhFpy1Lx6keTL4IQh0el%2B1l%2BmE1HiIKFdtcqDwtAoyZpdpdT3Wd6ROcPvGKbpqoElTwBLgqJT840TleGG1mtSg4aJIpUHlEq%2BKROLoj0wW%2BV9eqa6nSq3MfGcEnUfWUPR%2BbDsxteUljNeHcBVeV53QNWTuGv0wnRrrgRb0u87NXHAspTrdhD1AxwkOB47Us007rINNlEvmQvq4vmY%2F31Dx38bFra%2BS8MVj52J9jh320EKa2CPwURyNawPFe3WSIhNB9FUoyZlfv66LpgAL2etKKiQUETrzeeQUIPCoDSD0GLs7mXhmMELj2EWWtzuNlBSe9s8xVK6P8fKq1mHXVggwwjGwQxTk5CPt5s0AE5iPB0E%2BrNC4F1KSn%2BxVI%2B4hUCvK6qTCsEBCQ7d43MZMScwOIE3o%2BKmzxt81ilqn13eoLwRFiH7JrVBnSNppb4968FZDvFVeIAMNOYuK4GOrMCoWB%2BSE5OBPUtjYUR2D1L970q79UuHoAacVwkIOMHhiJeNbM1P0XiFE9nQPQoFiWJGzdxK0icLXUmnqt5e3aKVsYkNNWfUNZVjMXPKjysKjmpZgGZRTtbQ8zsbfk5rl4mTtZNF6ljRgFnAZ%2FuN9hryvrnl6pc3tQN3eH3qXLxsYfTJxQZkLppivMyuSkwHZvg2opy31HJE2FyCaghOimmOMTyJhlTYtR1wljGxJv9plhwwCIb2Mw14LSXnGMBVhTYEeJqcrlI%2BEoinI04J9%2FTFWSAarBSXzTiy4S0ZybePAGIQJpmWlT2nLkqMjbZlYcFLu%2B%2BHGxolt3MFs7zHZbIHIvaDkp4HFKzKwbPjF2QApA%2FBK6yPKqBcfUy1t37reW8DInuTHTwExfdqwRQebouvhyieg%3D%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240215T140613Z&X-Amz-SignedHeaders=host&X-Amz-Expires=300&X-Amz-Credential=ASIA6GBMH5ENJT63NALR%2F20240215%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Signature=00411d8ed43ff93d05678fa73991d2df5203316e860c9564e1b57810435b93d6'>Click here to view the fonts style </a> </p>
+              <p><a className='p-2 m-2 bg-[#FE7446] text-white rounded' href='https://mystrapi.s3.eu-north-1.amazonaws.com/fonts.pdf'>Click here to view the fonts style </a> </p>
            </div>
           <form onSubmit={handleSubmit(handleSubmitData)}  className='flex flex-col gap-3 gap-y-9 max-w-screen-2xl my-10 justify-between px-5'>
                    {/* <div>
@@ -109,8 +113,8 @@ const CustomBox = () => {
                      <label>Postage</label>
                      <select {...register('Postage')} className='h-10 rounded border border-slate-400'>
                           <option selected disabled value={''}>Choose an option</option>
-                          <option value={0}>Aus Post Postage: Free Austrilia wide</option>
-                          <option value={15}>Express Post $15 </option>
+                          <option value={"Aus Post Postage: Free Austrilia wide"}>Aus Post Postage: Free Austrilia wide</option>
+                          <option value={'Express Post $15'}>Express Post $15 </option>
                           
                      </select>
                      {errors.Postage && <small>{errors.Postage.message}</small>}
@@ -120,21 +124,31 @@ const CustomBox = () => {
                    
                     <div className='mt-2 flex items-center w-full gap-x-2'>
                          <SignInput label={"Post Code"} name={'post_code'} events={register} type={'text'} errors={errors} />
-                        <div className='flex flex-col w-full relative'>
-                          <label>Upload an Image</label>
-                          
-                        <label htmlFor='image' className=' bg-white border rounded p-1 cursor-pointer  border-green-500'>Upload <span className='text-2xl'>+</span></label>
-                        <input type='file' className='hidden' id='image' onChange={(e)=>handleImage(e)} />
-                        <small className='absolute -bottom-5'>An image of what will look on box will be sent back for approval.</small>
-                        </div>
+                      
                         
+                    </div> 
+                    <div>
+                       <div className='flex flex-col gap-y-3 '>
+                       <div className='flex flex-col w-full flex-1'>
+                          <label>Upload an Image.</label>
+                        <label htmlFor='image' className=' bg-white border border-dashed h-14 rounded p-1 cursor-pointer  border-slate-400'>Upload any image here. An image of what will look on box will be sent back for approval. <span className='text-2xl'>+</span></label>
+                        <input type='file' className='hidden' id='image' onChange={(e)=>handleImage(e)} />
+                        </div>
+                        <div className='flex-1'>
+                        {image && <img src={URL.createObjectURL(image)} className='w-[200px]  rounded-md' />}
+                        </div>
+                       </div>
                     </div>  
-                    {image && <img  src={URL.createObjectURL(image)} className='max-w-[400px] w-[100%]' />} 
+                  
+                    <div className='flex flex-col my-3 gap-3'>
+                         <label>Extra Comments / Please type in Free short message to be engraved under lid or how you would like the format</label>
+                         <textarea rows={6} {...register('extra_comment')} name='extra_comment'></textarea>
+                    </div>
                    <button disabled={loading} type='submit' className=' bg-green-400 text-white p-3' >{loading ? 'Sending...' :'Send Request' }</button>
           </form>
            
         </div>
-
+        {open && <CheckoutSuccess isModalOpen={open} handleOk={()=>setOpen(false)} />}
 
       </div>
     </div>

@@ -23,12 +23,13 @@ function ProductDetailPopup({open,data,setModal,active}) {
              <p className='font-bold flex gap-x-1'><span>Email : </span><span>{data?.email} </span></p>
              <p className='font-bold flex gap-x-1'><span>Phone : </span><span>{data?.phone} </span></p>
              <p className='font-bold flex gap-x-1'><span>Sign Content : </span><span>{data?.sign_content} </span></p>
-             <p className='font-bold flex gap-x-1'><span>Size : </span><span>{data?.size || data[active]?.data?.attributes?.initial_size} </span></p>
-             {data?.sign_edge && <p className='font-bold flex gap-x-1'><span>Sign Edge : </span><span>{data?.sign_edge} </span></p>}
-             {data?.fixing_option && <p className='font-bold flex gap-x-1'><span>Fixing Option : </span><span>{data?.fixing_option} </span></p>}
-             {data?.timber_specie && <p className='font-bold flex gap-x-1'><span>Timber Specie : </span><span>{data?.timber_specie} </span></p>}
-             {data?.compartments && <p className='font-bold flex gap-x-1'><span>Comparments : </span><span>{data?.compartments} </span></p>}
-             {!active && <p className='font-bold flex gap-x-1'><span>Postage : </span><span>{data?.Postage} {data?.postage_price} </span></p>}
+            {(data?.size || data[active]?.data?.attributes?.initial_size) &&  <p className='font-bold flex gap-x-1'><span>Size : </span><span>{data?.size || data[active]?.data?.attributes?.initial_size} </span></p>}
+             {(data?.sign_edge  )&& <p className='font-bold flex gap-x-1'><span>Sign Edge : </span><span>{data?.sign_edge} </span></p>}
+             {data?.fixing_option  && <p className='font-bold flex gap-x-1'><span>Fixing Option : </span><span>{data?.fixing_option} </span></p>}
+             {data?.timber_specie   && <p className='font-bold flex gap-x-1'><span>Timber Specie : </span><span>{data?.timber_specie} </span></p>}
+             {data?.compartments !=null  && <p className='font-bold flex gap-x-1'><span>Comparments : </span><span>{data?.compartments} </span></p>}
+             {data?.extra_comment  && <p className='font-bold flex gap-x-1'><span>Extra comment : </span><span>{data?.extra_comment} </span></p>}
+           
              {active && <p className='font-bold flex gap-x-1'><span>Postage : </span><span>{data[active].data?.attributes?.Postage} {data[active]?.data?.attributes?.postage_price} </span></p>}
         </div>
  </div>

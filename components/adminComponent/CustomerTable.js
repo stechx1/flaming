@@ -22,6 +22,7 @@ function CustomerTable({ token }) {
   const [details, setDetails] = useState(null);
   const [page, setPage] = useState(1);
   const { customerData, total } = useFetchCustomer(pageNum, search, token);
+  console.log("customer data ",customerData)
   const [activeTab, setActiveTab] = useState(1);
   const {data} = useFetchCategoryCustomer(activeTab,searchInput);
  
@@ -159,6 +160,11 @@ function CustomerTable({ token }) {
             dataIndex={"sign_content"}
             key={"sign_content"}
           />
+          <Column
+            title="Extra Comment"
+            dataIndex={"extra_comment"}
+            key={"extra_comment"}
+          />
           <Column title="Size" dataIndex="size" key="size" />
 
           <Column title="Budget" dataIndex="budget" key="budget" />
@@ -184,6 +190,11 @@ function CustomerTable({ token }) {
             title="Fixing Option"
             dataIndex="fixing_option"
             key="fixing_option"
+          />
+          <Column
+            title="Timber Specie"
+            dataIndex="timber_specie"
+            key="timber_specie"
           />
           <Column
             title="Action"
