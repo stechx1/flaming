@@ -56,6 +56,7 @@ function EmailPopUp({ isModalOpen, setIsModalOpen, userData,isCustome,active }) 
               
                first_name:getData?.customer?.data?.attributes?.first_name || getData?.customer_other?.data?.attributes?.first_name,
                last_name:getData?.customer?.data?.attributes?.last_name || getData?.customer_other?.data?.attributes?.last_name,
+               title:getData?.customer?.data?.attributes?.type || getData?.customer_other?.data?.attributes?.[active]?.data?.attributes?.title,
                sign_content:getData?.customer?.data?.attributes?.sign_content,
                base_price:getData?.base_price || getData?.customer_other?.data?.attributes?.[active]?.data?.attributes?.price,
                sign_edge:getData?.sign_edge,
