@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 
 
 function EmailPopUp({ isModalOpen, setIsModalOpen, userData,isCustome,active }) {
-  console.log("active ",active)
+    
   const [isSending, setIsSending] = useState(false)
   const [inputs,setInputs] = useState({
        sign_edge:null,
@@ -153,7 +153,7 @@ console.log("inputs ",inputs)
                                  <p ><span className="capitalize"> {active}</span></p>
                              </div>
                     </div>}
-                <div className="text-end"><button type="submit" className="bg-[#003933] py-2 px-3 border-0 w-full rounded text-white">Send</button></div> 
+                <div className="text-end"><button type="submit" disabled={isSending} className="bg-[#003933] py-2 px-3 border-0 w-full rounded text-white">{isSending ?"Sending...":'Send'}</button></div> 
                </form>  
         </div>
         

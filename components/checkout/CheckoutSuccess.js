@@ -19,7 +19,7 @@ function CheckoutSuccess({ isModalOpen, handleOk }) {
           </div>
           <div>
             <p className="text-xl font-semibold text-center my-3 text-green-600">
-               Thanks for purchasing a product
+               Thanks for visiting
             </p>
             
             <p className="text-center text-base">
