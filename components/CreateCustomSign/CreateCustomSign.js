@@ -54,7 +54,7 @@ const CreateCustomSign = () => {
 
                 const response = await axiosInstance.post("/customer-custom-designs?populate=*",formData)
                 console.log("custome response ",response.data?.data?.attributes)
-                const emailResponse = await  axiosInstance.post('/user/client/email',{product:response.data?.data?.attributes,to:'abc@gmail.com',from:data?.email})
+                const emailResponse = await  axiosInstance.post('/user/client/email',{product:response.data?.data?.attributes,image,to:'abc@gmail.com',from:data?.email})
                 console.log("email response ",emailResponse.data)
                 setOpen(true)
                 

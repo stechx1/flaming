@@ -1,5 +1,6 @@
-import { axiosInstance } from "@/axios/axios";
 import React, { useEffect, useState } from "react";
+import { axiosInstance } from "@/axios/axios";
+
 
 function useFetchCategoryCustomer(active,searchTerm) {
   const [data, setData] = useState([]);

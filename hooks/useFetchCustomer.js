@@ -1,5 +1,6 @@
-import { axiosInstance } from "@/axios/axios";
 import React, { useEffect, useState } from "react";
+import { axiosInstance } from "@/axios/axios";
+
 
 function useFetchCustomer(pageNum, searchTerm, token) {
   const [customers, setCustomer] = useState([]);
@@ -32,7 +33,7 @@ function useFetchCustomer(pageNum, searchTerm, token) {
               phone: item?.attributes?.phone,
               sign_edge: item?.attributes?.sign_edge ,
               fixing_option: item?.attributes?.fixing_option ,
-              indoor_outdoor:item?.attributes?.selectedWeatherproofing ,
+              indoor_outdoor:item?.attributes?.indoor_outdoor ,
               sign_content: item?.attributes?.sign_content,
               size: item?.attributes?.size,
               price: item?.attributes?.price,
@@ -41,7 +42,8 @@ function useFetchCustomer(pageNum, searchTerm, token) {
               Postage:item?.attributes?.Postage,
               type:item?.attributes?.type,
               extra_comment:item?.attributes?.extra_comment,
-              timber_specie:item?.attributes?.timber_specie
+              timber_specie:item?.attributes?.timber_specie,
+              font:item?.attributes?.font
             };
 
             return data;

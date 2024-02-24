@@ -1,25 +1,28 @@
+import React, { useEffect, useLayoutEffect, useState } from 'react'
+import CustomerTable from '@/components/adminComponent/CustomerTable.jsx'
 
-import CustomerTable from '@/components/adminComponent/CustomerTable'
-import { useRouter } from 'next/router'
-import React, { useEffect, useLayoutEffect } from 'react'
 
 
 function PageForAdmin() {
 
-  const navigate = useRouter()  
-  let token
-  if (typeof window !== 'undefined') {
-    // Perform localStorage action
-     token = localStorage.getItem('token')
-     if(!token){
+     const [token,setToken] = useState(null)
+  
+     useEffect(()=>{
 
-           navigate.replace('/')
-     }
+ if (typeof window !== 'undefined') {
+    // Perform localStorage action
+     setToken(localStorage.getItem('token'))
+    
   }
+
+
+     },[])
+ 
+ 
 
   return(
       <div>
-           <CustomerTable token={token}/>
+           {token ? <CustomerTable token={token}/>:<div>You are not allowed to access this route</div>}
       </div>
   )
 }

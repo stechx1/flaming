@@ -12,7 +12,7 @@ function CheckoutDetails() {
   const [userData, setUserData] = useState(null);
  
   const tp = type == 'box' ? 'box' :type == 'sign' ? "sign" : type == 'chopping_serving_board' ? 'chopping_serving_board' : type == 'timber_serving_board'?'timber_serving_board': type == 'olive_wood_heart' ?'olive_wood_heart' :'' 
-  const signAdd = userData?.base_price + userData?.Postage + userData?.sign_edge + userData?.fixing_option + userData?.weather_proof + userData?.image + userData?.Postage
+  const signAdd = userData?.base_price + userData?.Postage + userData?.sign_edge + userData?.fixing_option + userData?.weather_proof + userData?.image  
   const boxAdd = userData?.base_price + userData?.Postage +userData?.compartments+ userData?.image +  userData?.Postage
   const signContent = userData?.customer?.data?.attributes?.sign_content || userData?.customer_other?.data?.attributes?.sign_content || null
   const size = userData?.customer?.data?.attributes?.size || userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.initial_size || null
@@ -21,6 +21,7 @@ function CheckoutDetails() {
   const postage_price = custome =="true"? userData?.Postage : userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.postage_price
   const otherProductTotal = userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.postage_price + userData?.customer_other?.data?.attributes[tp]?.data?.attributes?.price || 0
    console.log("customer other price details ",otherProductTotal )
+   console.log("sign add ",signAdd)
   useEffect(() => {
     const abort = new AbortController();
     const signal = abort.signal;

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Button, Space, Table, Tag } from "antd";
+
+import { Table } from "antd";
 import useFetchCustomer from "@/hooks/useFetchCustomer";
 import EmailPopUp from "./EmailPopUp";
-const { Column, ColumnGroup } = Table;
+
 import { Input } from "antd";
 import ProductPagination from "../pagination/ProductPagination";
 import { baseImgUri } from "@/constants/baseImgUri";
@@ -10,8 +11,9 @@ import ProductDetailPopup from "./ProductDetailPopup";
 import useFetchCategoryCustomer from "@/hooks/useFetchCategoryCustomer";
 import CustomerProductTable from "./CustomerProductTable";
 const { Search } = Input;
-
+const { Column, ColumnGroup } = Table;
 function CustomerTable({ token }) {
+  
   const [input, setInput] = useState("");
   const [pageNum, setPageNum] = useState(1);
   const [search, setSearch] = useState("");
@@ -171,8 +173,8 @@ function CustomerTable({ token }) {
           <Column title="Sign Edging" dataIndex="sign_edge" key="sign_edge" />
           <Column
             title="Timber Specie"
-            dataIndex="timer_specie"
-            key="timer_specie"
+            dataIndex="timber_specie"
+            key="timber_specie"
           />
           <Column
             title="Indoor/Outdoor"

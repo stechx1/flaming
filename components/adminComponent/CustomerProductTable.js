@@ -1,6 +1,6 @@
 import { baseImgUri } from '@/constants/baseImgUri'
 import { Table } from 'antd'
-import Column from 'antd/es/table/Column'
+const { Column, ColumnGroup } = Table;
 import React, { useState } from 'react'
 import EmailPopUp from './EmailPopUp';
 import ProductDetailPopup from './ProductDetailPopup';
