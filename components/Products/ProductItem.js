@@ -8,7 +8,7 @@ import { axiosInstance } from "@/axios/axios";
 const ProductItem = () => {
   const router = useRouter();
   const productId = router.query?.itemId;
-  console.log("product details ", productId);
+  console.log("run production level")
   const [price, setPrice] = useState();
   
   const [ItemDetails, setItemDetails] = useState({
